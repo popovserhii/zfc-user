@@ -1,0 +1,26 @@
+{
+  "name": "popov/zfc-user",
+  "description": "ZF2 user managment module with prebuild UI",
+  "type": "zf-module",
+  "license": "MIT",
+  "keywords": [
+    "zf2",
+    "user managment"
+  ],
+  "authors": [
+    {
+      "name": "Serhii Popov",
+      "email": "popow.sergiy@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=5.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "Popov\\ZfcUser\\": "src/"
+    }
+  }
+}
