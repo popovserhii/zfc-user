@@ -121,15 +121,15 @@ class Acl extends ZendAcl
         $resource = ltrim($resource, '/');
         foreach ($roles as $role) {
             $mnemo = is_object($role) ? $role->getMnemo() : $role;
-            //if ($this->hasResource('all')) {
+
                 $allowed = ['all' => $this->isAllowed($mnemo, 'all', Acl::getAccessTotal())];
-            //}
+
             if ($this->hasResource($resource)) {
                 $allowed['total'] = $this->isAllowed($mnemo, $resource, Acl::getAccessTotal());
                 $allowed['write'] = $this->isAllowed($mnemo, $resource, Acl::getAccess()['write']);
                 $allowed['read'] = $this->isAllowed($mnemo, $resource, Acl::getAccess()['read']);
             }
-            if (/*isset($allowed) &&*/ in_array(true, $allowed)) {
+            if (in_array(true, $allowed)) {
                 return true;
             }
         }

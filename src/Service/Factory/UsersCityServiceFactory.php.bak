@@ -10,7 +10,7 @@ namespace Popov\ZfcUser\Service\Factory;
 use Zend\Authentication\AuthenticationService;
 use Interop\Container\ContainerInterface;
 use Popov\ZfcUser\Service\UserService;
-use Popov\ZfcUser\Model\User as User;
+use Popov\ZfcUser\Model\UserPlugin as UserPlugin;
 
 class UsersCityServiceFactory
 {
@@ -23,7 +23,7 @@ class UsersCityServiceFactory
             /** @var \Doctrine\ORM\EntityManager $om */
             $om = $container->get('Doctrine\ORM\EntityManager');
             $dataUser = $authService->getIdentity();
-            $user = $om->find(User::class, $dataUser['id']);
+            $user = $om->find(UserPlugin::class, $dataUser['id']);
             $userService->setCurrent($user);
         }
 

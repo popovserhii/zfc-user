@@ -1,51 +1,41 @@
 <?php
 /**
- * File for Event Class
+ * The MIT License (MIT)
+ * Copyright (c) 2017 Serhii Popov
+ * This source file is subject to The MIT License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/MIT
  *
- * @category  User
- * @package   User_Event
- * @author    Marco Neumann <webcoder_at_binware_dot_org>
- * @copyright Copyright (c) 2011, Marco Neumann
- * @license   http://binware.org/license/home/type:new-bsd New BSD License
- */
-
-/**
- * @namespace
+ * @category Popov
+ * @package Popov_<package>
+ * @author Serhii Popov <popow.sergiy@gmail.com>
+ * @license https://opensource.org/licenses/MIT The MIT License (MIT)
  */
 namespace Popov\ZfcUser\Event;
 
-/**
- * @uses Zend\Mvc\MvcEvent
- * @uses User\Controller\Plugin\UserAuthentication
- * @uses User\Acl\Acl
- */
-use Popov\ZfcUser\Controller\Plugin\UserAuthentication;
-use Popov\ZfcUser\Model\User;
 use Zend\Mvc\MvcEvent as MvcEvent;
-	//Zend\Permissions\Acl\Acl as Acl,
+//Zend\Permissions\Acl\Acl as Acl,
 use Zend\Session\Container as SessionContainer;
 use Zend\ServiceManager\Exception;
+use Zend\Stdlib\ArrayUtils;
+use Zend\Authentication\AuthenticationService;
 
-use Popov\ZfcUser\Controller\Plugin\User as UserPlugin;
-use Popov\Agere\String\StringUtils as AgereString;
+use Popov\ZfcUser\Model\User;
+use Popov\ZfcUser\Controller\Plugin\UserAuthentication;
+use Popov\ZfcCore\Service\ConfigAwareTrait;
+use Popov\ZfcUser\Controller\Plugin\UserPlugin;
+//use Popov\Agere\String\StringUtils as AgereString;
 use Popov\ZfcUser\Controller\Plugin\UserAuthentication as AuthPlugin;
 use Popov\ZfcUser\Acl\Acl;
 use Zend\Stdlib\Request;
 
-/**
- * Authentication Event Handler Class
- *
- * This Event Handles Authentication
- *
- * @category  User
- * @package   User_Event
- * @copyright Copyright (c) 2011, Marco Neumann
- * @license   http://binware.org/license/home/type:new-bsd New BSD License
- */
 class Authentication
 {
-    /** @var User */
-    protected $userPlugin;
+    use ConfigAwareTrait;
+
+    /** @var AuthenticationService */
+    protected $authService;
 
     /** @var Request */
     protected $request;
@@ -56,7 +46,7 @@ class Authentication
     /** @var Acl */
     protected $acl = null;
 
-    protected $roles;
+    protected $roles = [];
 
     protected $adapter;
 
@@ -64,14 +54,14 @@ class Authentication
 
     protected $denyDefault = 0;
 
-    public function setUserPlugin($user)
+    public function setAuthService($authService)
     {
-        $this->userPlugin = $user;
+        $this->authService = $authService;
     }
 
-    public function getUserPlugin()
+    public function getAuthService()
     {
-        return $this->userPlugin;
+        return $this->authService;
     }
 
     public function setRequest($request)
@@ -275,7 +265,7 @@ class Authentication
         //@todo - Should we really use here and Controller Plugin?
         $userAuth = $this->getUserAuthenticationPlugin();
         $viewModel = $event->getViewModel();
-        $viewModel->permissionDenied = true;
+        //$viewModel->permissionDenied = true;
         //$this->_Acl = $viewModel->acl;
 
         $roleMnemos = [Acl::DEFAULT_ROLE];
@@ -283,12 +273,16 @@ class Authentication
         $access = Acl::getAccess();
         $accessTotal = Acl::getAccessTotal();
 
-        $userPlugin = $this->getUserPlugin();
+        $userPlugin = $this->getAuthService();
         /** @var UserPlugin $userPlugin */
-        if (($user = $userPlugin->current()) && $user->getId()) {
-            $roleMnemos = $userPlugin->asArray('roles', 'mnemo');
+        if (($userPlugin->hasIdentity()) && ($user = $userPlugin->getIdentity()) && $user->getId()) {
+            $roleMnemos = [];
+            foreach ($user->getRoles() as $role) {
+                $roleMnemos[] = $role->getMnemo();
+            }
 
-            if (!$userPlugin->isAdmin()) {
+            //if (!$userPlugin->isAdmin()) {
+            if (!in_array('admin', $roleMnemos)) {
                 // Update expire login
                 $sessionAuth = new SessionContainer('Zend_Auth');
                 $sessionAuth->setExpirationSeconds(3600); // 60 minutes
@@ -341,15 +335,6 @@ class Authentication
         $action = $routeMatch->getParam('action');
         $target = $controller . '/' . $action;
 
-        //$sm = $event->getApplication()->getServiceManager();
-        #$cpm = $sm->get('ControllerPluginManager');
-        /** @var \Zend\Mvc\Controller\Plugin\Url $urlPlugin */
-        #$urlPlugin = $cpm->get('url');
-        #$fullTarget = $urlPlugin->fromRoute($routeMatch->getMatchedRouteName(), $routeMatch->getParams());
-
-        #$request = $sm->get('Request');
-        #$targetFull = $request->getUri()->getPath();
-
         $targetFull = $event->getRouter()->assemble($routeMatch->getParams(), [
             'name' => $routeMatch->getMatchedRouteName()
         ]);
@@ -390,20 +375,7 @@ class Authentication
 	 * @return mixed
 	 */
 	public function getDbRoles($dbAdapter) {
-        // making the roles array
-        // @todo Перемістити в БД і налаштовувати через адмінку
-        // @todo Реалізувати можливість швидкого додавання через конфіги
-        $this->roles['guest'][] = ['target' => 'inquiry/form', 'access' => Acl::ACCESS_TOTAL];
-        $this->roles['guest'][] = ['target' => 'inquiry/thanks', 'access' => Acl::ACCESS_TOTAL];
-
-        $this->roles['guest'][] = ['target' => 'soap-api/index', 'access' => Acl::ACCESS_TOTAL];
-        $this->roles['guest'][] = ['target' => 'soap-api/get', 'access' => Acl::ACCESS_TOTAL];
-        //$this->roles['guest'][] = ['target' => 'soap-api/post', 'access' => Acl::ACCESS_TOTAL];
-
-        $this->roles['guest'][] = ['target' => 'user/login', 'access' => Acl::ACCESS_TOTAL];
-        $this->roles['guest'][] = ['target' => 'user/logout', 'access' => Acl::ACCESS_TOTAL];
-        $this->roles['guest'][] = ['target' => 'user/forgot-password', 'access' => Acl::ACCESS_TOTAL];
-        // Table roles to array
+        $this->roles = ArrayUtils::merge($this->getConfig()['acl'], $this->roles);
 
         $resultRolesArray = $this->getResultRolesArray($dbAdapter);
 
@@ -472,25 +444,13 @@ SQL;
 		$dbAdapter = $this->getDbAdapter();
 		$where = '';
 
-		//ini_set('display_errors', 'on');
-		//error_reporting(-1);
-		
-		$userHelper = $sm->get('ViewHelperManager')->get('user');
 		$simpler = $sm->get('ControllerPluginManager')->get('simpler');
-		$user = $userHelper->getUser();
-		//$user = $userHelper->current();
+		$user = $this->getAuthService()->getIdentity();
 		$viewModel = $e->getViewModel();
 
 
 		// Acl class
-		//$Acl = $viewModel->acl;
 		$acl = $this->getAcl();
-
-        //if (!$acl->hasResource('all')) { //@todo видалити і реалізувати нормальну роботу без Permission
-        //    return;
-        //}
-
-
         $role = $user ? $user->getRoles()->first() : false;
 		if ($role && $role->getMnemo() && !$acl->isAllowed($role->getMnemo(), 'all', $accessDefault)) {
 			// Where
@@ -517,18 +477,9 @@ SQL;
 					$permissionId = $result['id'];
 				}
 				if ($permissionId > 0) {
-					//$roleId = AgereString::getStringAssocDigit($user['roleId'], 'role');
-					//$roleId = implode(', ', $roleId);
-					//$userId = AgereString::getStringAssocDigit($user['id'], 'user');
-					$currentUser = $userHelper->current();
-					$roleId = AgereString::getStringAssocDigit($simpler($currentUser->getRoles())->asArray('id'), 'role');
+					$roleId = AgereString::getStringAssocDigit($simpler($user->getRoles())->asArray('id'), 'role');
 					$roleId = implode(', ', $roleId);
-					$userId = AgereString::getStringAssocDigit($currentUser->getId(), 'user');
-					
-					//$roleId = $simpler($user->getRoles())->asArray('id');
-					//$roleId = implode(', ', $roleId);
-					//$userId = AgereString::getStringAssocDigit($user['id'], 'user');
-
+					$userId = AgereString::getStringAssocDigit($user->getId(), 'user');
 					$sql = <<<SQL
 SELECT pa.`roleId`, pa.`access`
 FROM `permission_access` pa

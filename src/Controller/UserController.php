@@ -518,7 +518,6 @@ class UserController extends AbstractActionController {
                 $password = $request->getPost('password');
                 //if (($auth = $uAuth->authenticate($email, $password)) && $auth->isValid()) {
                 if ($uAuth->authenticate($email, $password)) {
-                    //$om = $serviceManager->get
                     $om = $serviceManager->get('Doctrine\ORM\EntityManager');
                     $user = $om->getRepository(User::class)->findOneBy([
                         'email' => $email,

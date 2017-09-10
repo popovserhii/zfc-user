@@ -17,7 +17,7 @@ class UsersService extends AbstractEntityService implements EventManagerAwareInt
 {
     use EventManagerAwareTrait;
 
-    //protected $entity = User::class;
+    //protected $entity = UserPlugin::class;
     protected $_repositoryName = 'users';
     protected $_entityAlias = 'Users';
     protected $isMd5 = false;
@@ -410,7 +410,7 @@ class UsersService extends AbstractEntityService implements EventManagerAwareInt
 
     /**
      * @param array $fields
-     * @param \Popov\ZfcUser\Model\User $item
+     * @param \Popov\ZfcUser\Model\UserPlugin $item
      * @param $locator
      * @return string
      */
@@ -659,19 +659,19 @@ class UsersService extends AbstractEntityService implements EventManagerAwareInt
 
     public function authenticateConsoleUser()
     {
-        // Find specified console User in the config
+        // Find specified console UserPlugin in the config
         $config = $this->getServiceLocator()->get('config');
         if (!isset($config['users'])) {
             throw new \Exception("The 'users' part of the config doesn't exist!");
         }
         if (!isset($config['users'][$this->consoleUserName])) {
-            throw new \Exception("Data for Console User were not specified in the config!");
+            throw new \Exception("Data for Console UserPlugin were not specified in the config!");
         }
         $email = $config['users'][$this->consoleUserName]['email'];
         $password = $config['users'][$this->consoleUserName]['password'];
 
         if (!$this->authenticateUser($email, $password)) {
-            throw new \Exception("The User data are wrong or specified User doesn't exist!");
+            throw new \Exception("The UserPlugin data are wrong or specified UserPlugin doesn't exist!");
         }
     }
 }

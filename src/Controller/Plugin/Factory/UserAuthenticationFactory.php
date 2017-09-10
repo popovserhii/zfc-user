@@ -6,7 +6,7 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\HelperPluginManager;
 use Zend\Authentication\Adapter\DbTable\CredentialTreatmentAdapter;
-use Popov\ZfcUser\Controller\Plugin\User;
+use Popov\ZfcUser\Controller\Plugin\UserPlugin;
 //use Popov\ZfcUser\Authentication\Adapter\DbTable\CredentialTreatmentAdapter;
 use Popov\ZfcUser\Controller\Plugin\UserAuthentication;
 

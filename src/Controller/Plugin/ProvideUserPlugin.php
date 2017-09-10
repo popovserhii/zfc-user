@@ -5,24 +5,26 @@ namespace Popov\ZfcUser\Controller\Plugin;
 trait ProvideUserPlugin
 {
     /**
-     * @var User
+     * @var UserPlugin
      */
     protected $userPlugin;
 
     /**
      * Set the user plugin
+
      *
-     * @param User $userPlugin
+*@param UserPlugin $userPlugin
      */
-    public function setUserPlugin(User $userPlugin)
+    public function setUserPlugin(UserPlugin $userPlugin)
     {
         $this->userPlugin = $userPlugin;
     }
 
     /**
      * Get the user plugin
+
      *
-     * @return User
+*@return UserPlugin
      */
     public function getUserPlugin()
     {

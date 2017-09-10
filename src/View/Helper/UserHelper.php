@@ -8,10 +8,10 @@ use Zend\View\Helper\AbstractHelper;
 use Zend\Authentication\AuthenticationService;
 use Zend\Session\Container as SessionContainer;
 use Popov\Agere\String\StringUtils as AgereString;
-use Popov\ZfcUser\Controller\Plugin\User as UserPlugin;
+use Popov\ZfcUser\Controller\Plugin\UserPlugin as UserPlugin;
 use Agere\Simpler\Plugin\SimplerPlugin;
 
-class User extends AbstractHelper implements ServiceLocatorAwareInterface {
+class UserHelper extends AbstractHelper implements ServiceLocatorAwareInterface {
 
 	use ServiceLocatorAwareTrait;
 
@@ -90,9 +90,9 @@ class User extends AbstractHelper implements ServiceLocatorAwareInterface {
 	/**
 	 * @return bool
 	 */
-	public function hasIdentity() {
+	/*public function hasIdentity() {
 		return $this->getUserPlugin()->hasIdentity();
-	}
+	}*/
 
 	/**
 	 * @return string

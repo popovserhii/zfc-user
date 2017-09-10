@@ -1,2 +1,2 @@
-# ZF2 User Module
-User management module with prebuild UI
+# ZF2 UserPlugin Module
+UserPlugin management module with prebuild UI

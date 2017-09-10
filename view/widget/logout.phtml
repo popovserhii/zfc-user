@@ -9,7 +9,7 @@ $userHelper = $this->plugin('user');
 $user = $userHelper->current();
 ?>
 
-<?php if ($userIdentity = $userHelper->hasIdentity()) : ?>
+<?php if ($user->getId()) : ?>
 <div class="user-profile pull-right">
     <div class="user-logo">
         <?php
@@ -20,7 +20,7 @@ $user = $userHelper->current();
             <img src="/files/get/<?= $user->getId() ?>/document/users/file/<?='small'.$photoExt?>">
             <div class="image-middle hide"></div>
         <?php } else { ?>
-            <img src="/media/images/nophoto.jpg">
+            <img src="/assets/images/nophoto.jpg">
         <?php } ?>
     </div>
     <div class="user-name">

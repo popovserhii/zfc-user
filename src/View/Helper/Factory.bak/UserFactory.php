@@ -5,7 +5,7 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\HelperPluginManager;
 
-use Popov\ZfcUser\View\Helper\User;
+use Popov\ZfcUser\View\Helper\UserHelper;
 
 class UserFactory implements FactoryInterface {
 
@@ -13,7 +13,7 @@ class UserFactory implements FactoryInterface {
 		die(__METHOD__);
 		/** @var HelperPluginManager $sm */
 		$sm = $hpm->getServiceLocator();
-		$userHelper = new User();
+		$userHelper = new UserHelper();
 		$userHelper->setUserPlugin($sm->get('ControllerPluginManager')->get('user'));
 
 

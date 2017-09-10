@@ -5,13 +5,13 @@ namespace Popov\ZfcUser\Controller\Plugin;
 interface UserPluginAwareInterface
 {
     /**
-     * @param User $userPlugin
+     * @param UserPlugin $userPlugin
      */
-    public function setUserPlugin(User $userPlugin);
+    public function setUserPlugin(UserPlugin $userPlugin);
 
     /**
      * @param $userPlugin
-     * @return User
+     * @return UserPlugin
      */
     public function getUserPlugin();
 }
