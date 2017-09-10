@@ -1,0 +1,36 @@
+</div>
+<div class="body-content-layout">
+<?php
+use Agere\Date\DateTime as AgereDateTime;
+?>
+<div class="panel-fixed">
+
+	<table class="table-content tableborder width ankets_tbl">
+		<thead class="CmsHeader">
+		<tr>
+			<td>№ п/п</td>
+			<td><?=$fields['email']?></td>
+			<td><?=$fields['firstName']?></td>
+			<td><?=$fields['lastName']?></td>
+			<td><?=$fields['cityId']?></td>
+			<td>Последняя дата входа</td>
+		</tr>
+		</thead>
+	</table>
+</div>
+
+<table class="cmsMainText ankets_tbl tableborder table-content table-info-row">
+	<tbody>
+	<?php foreach ($users as $user) { ?>
+		<tr>
+			<td><?=$user['id']?></td>
+			<td><?=$user['email']?></td>
+			<td><?=$user['firstName']?></td>
+			<td><?=$user['lastName']?></td>
+			<td><?=$user['city']?></td>
+			<td><?=(isset($logs[$user['id']])) ? AgereDateTime::getDateFormat($logs[$user['id']]['maxDate'], 'd.m.Y H:i:s') : ''?></td>
+		</tr>
+	<?php } ?>
+	</tbody>
+</table>
+</div>

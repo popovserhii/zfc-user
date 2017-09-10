@@ -1,0 +1,87 @@
+</div>
+<div class="body-content-layout">
+<?php
+use Popov\Agere\String\StringUtils as AgereString;
+
+/** @var \Popov\Brand\View\Helper\Brand $brandHelper */
+$brandHelper = $this->brand();
+
+$brands = $brandHelper->brandArray();
+?>
+<div class="panel-fixed">
+
+	<table class="table-content tableborder width ankets_tbl">
+		<thead class="CmsHeader">
+		<tr>
+			<td>№ п/п</td>
+			<td><?=$fields['email']?></td>
+			<td><?=$fields['firstName']?></td>
+			<td><?=$fields['lastName']?></td>
+			<td><?=$fields['cityId']?></td>
+			<td>Роль</td>
+			<td>Доступ к марки машин</td>
+			<td></td>
+		</tr>
+		</thead>
+	</table>
+</div>
+
+<table class="cmsMainText ankets_tbl tableborder table-content table-info-row">
+	<tbody>
+	<?php foreach ($users as $user) { ?>
+		<tr>
+			<td><a href="<?=$this->url('default/id', [
+					'controller'	=> $controller,
+					'action'		=> 'edit',
+					'id'			=> $user['id']
+				])?>"><?=$user['id']?></a></td>
+			<td><?=$user['email']?></td>
+			<td><?=$user['firstName']?></td>
+			<td><?=$user['lastName']?></td>
+			<td><?=$user['city']?></td>
+			<td><?=$user['role']?></td>
+			<td>
+				<?php
+				$roleId = AgereString::getStringAssocDigit($user['id'], 'user');
+				$permissionBrandsName = '';
+
+				if (isset($permissionBrands[$roleId]))
+				{
+					foreach ($permissionBrands[$roleId] as $itemPermission)
+					{
+						if ($permissionBrandsName != '')
+						{
+							$permissionBrandsName .= ', ';
+						}
+
+						if (isset($brands[$itemPermission])) {
+							$permissionBrandsName .= $brands[$itemPermission];
+						}
+					}
+				}
+
+				echo $permissionBrandsName;
+				?>
+			</td>
+			<td>
+				<input type="hidden" name="id" value="<?=$user['id']?>">
+				<?php
+				$buttonsArgs['delete'] = [
+					'href'			=> $this->url('default/id', [
+						'controller'	=> $controller,
+						'action'		=> 'delete',
+						'id'			=> $user['id']
+					]),
+					'class'			=> $controller,
+					'controller'	=> $controller,
+					'action'		=> 'delete',
+				];
+
+				echo $this->buttons('deleteItem', $buttonsArgs);
+				?>
+			</td>
+		</tr>
+	<?php } ?>
+	</tbody>
+</table>
+</div>

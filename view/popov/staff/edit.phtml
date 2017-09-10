@@ -1,0 +1,274 @@
+<?php
+/** @var \Popov\Agere\View\Helper\Form $formAgereHelper */
+$formAgereHelper = $this->formAgere();
+
+/** @var \Popov\City\View\Helper\CityHelper $cityHelper */
+$cityHelper = $this->city();
+
+/** @var \Popov\Department\View\Helper\Department $departmentHelper */
+$departmentHelper = $this->department();
+
+/** @var \Popov\Supplier\View\Helper\Supplier $supplierHelper */
+$supplierHelper = $this->supplier();
+
+/** @var \Popov\Fields\View\Helper\Fields $fieldsHelper */
+$fieldsHelper = $this->field();
+
+/** @var \Popov\Agere\View\Helper\Html $htmlHelper */
+$htmlHelper = $this->htmlAgere();
+
+$controller = $this->layout()->route->getParam('controller');
+$action = $this->layout()->route->getParam('action');
+
+$currentPage = "{$controller}/{$action}";
+
+$buttonsArgs['save'] = [
+	'type'       => 'submit',
+	'attr'       => [
+		'class' => 'button',
+	],
+	'controller' => $controller,
+	'action'     => $action,
+];
+
+$buttonSave = $this->buttons('saveItem', $buttonsArgs, ['id' => $id]);
+
+// Permission fields
+$argsSet = $fieldsHelper->fieldsPermission($currentPage);
+$formatStr_1 = '<tr><td>%field</td><td>%val</td></tr>';
+?>
+
+<div id="tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+	<div id="credit-extend" aria-labelledby="ui-id-2" class="ui-tabs-panel ui-widget-content ui-corner-bottom" style="padding: 2px;width: 70%" aria-expanded="true" aria-hidden="false">
+
+		<?=$this->form()->openTag($form)?>
+		<fieldset>
+			<legend class="input_heading">Основные данные</legend>
+
+			<table class="main-calculation-data width tableinput">
+				<tr>
+					<td style="padding-right: 10px">
+						<?php /*$formName = $form->get('photo'); */?><!--
+						<?php /*if ($formName->getValue() != '') { */?>
+							<img src="/files/get/<?/*=$id*/?>/document/users/file/<?/*=$formName->getValue()*/?>" width="300">
+							<span class="hide">фото</span>-->
+							<?php
+							$buttonsArgs['delete'] = [
+								'href'			=> $this->url('default/id', [
+									'controller'	=> $controller,
+									'action'		=> 'delete-file',
+									'id'			=> $id
+								]),
+								'class'			=> $controller,
+								'controller'	=> $controller,
+								'action'		=> 'delete-file',
+							];
+
+							echo $deletePhoto = $this->buttons('deletePhoto', $buttonsArgs);
+							?>
+						<?php /*} else if (! $buttonSave) { */?>
+							<!--<img src="/media/images/nophoto.jpg" width="300">
+						<?php /*}
+						if ($buttonSave) { */?>
+							<?/*=$this->formRow($formName)*/?>
+						--><?php //} ?>
+
+						<!-- image upload -->
+						<?php
+						$formName = $form->get('photo');
+
+						if (! $buttonSave && $formName->getValue() == '')
+						{
+							$src = '/media/images/nophoto-large.jpg';
+						}
+						else
+						{
+							$src = ($formName->getValue() != '') ? '/files/get/'.$id.'/document/users/file/'.$formName->getValue() : '';
+						}
+
+						echo $this->partial('template/image-upload', [
+							'src' => $src,
+						]);
+						?>
+					</td>
+					<td>
+						<table class="main-calculation-data width tableinput">
+							<tbody>
+							<?php
+							$fieldKeys = [];
+
+
+							// Row
+							$fieldKey = 'email';
+
+							// Td
+							$formName = $form->get($fieldKey);
+							$fieldKeys[$fieldKey] = $this->formRow($formName);
+							//END Row
+
+
+							// Print
+							$argsFields = [];
+
+							foreach ($fieldKeys as $fieldKey => $val)
+							{
+								$argsFields[] = [
+									'formatStr'	=> $formatStr_1,
+									'args'		=> [
+										'field'	=> $argsSet[$fieldKey]['fieldName'],
+										'val'	=> $val,
+									],
+									'argsSet'	=> $argsSet[$fieldKey],
+								];
+							}
+
+							echo $tmpHtml = $htmlHelper->htmlArgs($argsFields);
+							// END Print
+							?>
+							<tr>
+								<td><?=$fields['firstName']?></td>
+								<td><?=$this->formRow($form->get('firstName')->setAttribute('disabled', (! $buttonSave)))?></td>
+							</tr>
+							<tr>
+								<td><?=$fields['lastName']?></td>
+								<td><?=$this->formRow($form->get('lastName')->setAttribute('disabled', (! $buttonSave)))?></td>
+							</tr>
+							<tr>
+								<td><?=$fields['patronymic']?></td>
+								<td><?=$this->formRow($form->get('patronymic')->setAttribute('disabled', (! $buttonSave)))?></td>
+							</tr>
+							<tr>
+								<td><?=$fields['phone']?></td>
+								<td><?=$this->formRow($form->get('phone')->setAttribute('disabled', (! $buttonSave)))?></td>
+							</tr>
+							<tr>
+								<td><?=$fields['phoneWork']?></td>
+								<td><?=$this->formRow($form->get('phoneWork')->setAttribute('disabled', (! $buttonSave)))?></td>
+							</tr>
+							<tr>
+								<td><?=$fields['phoneInternal']?></td>
+								<td><?=$this->formRow($form->get('phoneInternal')->setAttribute('disabled', (! $buttonSave)))?></td>
+							</tr>
+							<tr>
+								<td><?=$fields['post']?></td>
+								<td><?=$this->formRow($form->get('post')->setAttribute('disabled', (! $buttonSave)))?></td>
+							</tr>
+							<tr>
+								<td><?=$fields['dateBirth']?></td>
+								<td><?=$this->formRow($form->get('dateBirth')->setAttribute('class', 'datepicker')->setAttribute('disabled', (! $buttonSave)))?></td>
+							</tr>
+							<tr>
+								<td><?=$fields['dateEmployment']?></td>
+								<td><?=$this->formRow($form->get('dateEmployment')->setAttribute('class', 'datepicker')->setAttribute('disabled', (! $buttonSave)))?></td>
+							</tr>
+							<!--<tr>
+								<td><?/*=$fields['departmentId']*/?></td>
+								<td>
+									<?php
+/*									$formName = $form->get('departmentId');
+									*/?>
+									<select<?/*=$formAgereHelper->strAttributes($formName->getAttributes())*/?>><?/*=$departmentHelper->departmentList($formName->getValue(), 'Выберите отдел', '')*/?></select>
+									<?/*=$this->formElementerrors($formName)*/?>
+								</td>
+							</tr>-->
+							<tr>
+								<td><?=$fields['supplierId']?></td>
+								<td>
+									<?php
+									$formName = $form->get('supplierId');
+
+									if ($buttonSave) {
+									?>
+										<select<?=$formAgereHelper->strAttributes($formName->getAttributes())?>><?=$supplierHelper->supplierList($formName->getValue(), 'Выберите поставщика')?></select>
+										<?=$this->formElementerrors($formName)?>
+									<?php } else {
+										echo $items[0]['supplier'];
+									} ?>
+								</td>
+							</tr>
+							<?php
+							$fieldKeys = [];
+
+
+							// Row
+							$fieldKey = 'cityId';
+
+							// Td
+							$formName = $form->get('cityId[]');
+							$formName2 = $form->get($fieldKey);
+							$fieldKeys[$fieldKey] = '<select'.$formAgereHelper->strAttributes($formName->getAttributes()).'>'.$cityHelper->cityList(($formName2->getValue() ? $formName2->getValue() : $formName->getValue()), 'Выберите город', '').'</select>'.
+								$this->formElementerrors($formName2);
+							//END Row
+
+
+                            // Row
+                            $fieldKey = 'showIndex';
+
+                            // Td
+                            $formName = $form->get($fieldKey);
+                            $fieldKeys[$fieldKey] = $this->formRow($formName);
+                            //END Row
+
+
+							// Print
+							$argsFields = [];
+
+							foreach ($fieldKeys as $fieldKey => $val)
+							{
+								$argsFields[] = [
+									'formatStr'	=> $formatStr_1,
+									'args'		=> [
+										'field'	=> $argsSet[$fieldKey]['fieldName'],
+										'val'	=> $val,
+									],
+									'argsSet'	=> $argsSet[$fieldKey],
+								];
+							}
+
+							echo $tmpHtml = $htmlHelper->htmlArgs($argsFields);
+							// END Print
+							?>
+							<tr>
+								<td><?=$fields['notation']?></td>
+								<td><?=$this->formRow($form->get('notation')->setAttribute('disabled', (! $buttonSave)))?></td>
+							</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</fieldset>
+
+		<div class="button-place">
+			<?=$buttonSave?>
+		</div>
+
+		<?=$this->form()->closeTag()?>
+
+	</div>
+</div>
+
+<script>
+<?php $this->inlineScript()->captureStart(); ?>
+	jQuery('[name=dateBirth], [name=dateEmployment]').datepicker({
+		changeMonth: true,
+		changeYear: true,
+		yearRange: '1920:',
+		dateFormat: 'dd/mm/yy'
+	});
+
+	jQuery('.staff-delete-file img').attr('width', '').attr('height', '');
+
+	<?php if ($deletePhoto) { ?>
+		jQuery('.staff-delete-file').hide();
+
+		jQuery('.btn.btn-del').click(function(){
+			jQuery.post(jQuery('.staff-delete-file').attr('href'));
+		});
+	<?php } ?>
+
+	<?php if (! $buttonSave) { ?>
+		jQuery('.btn.btn-del').hide();
+	<?php } ?>
+<?php $this->inlineScript()->captureEnd(); ?>
+</script>

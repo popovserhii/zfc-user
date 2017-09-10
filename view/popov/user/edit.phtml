@@ -1,0 +1,41 @@
+<?php
+$controller = $this->layout()->route->getParam('controller');
+$action = $this->layout()->route->getParam('action');
+$classActiveLi = 'ui-tabs-active ui-state-active';
+?>
+<div class="body-content-layout">
+<div class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+	<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+		<li class="ui-state-default ui-corner-top<?=($action == 'add' || $action == 'edit') ? ' '.$classActiveLi : ''?>">
+			<a href="<?=$this->url('default/id', [
+				'controller' => $controller,
+				'action'     => 'edit',
+				'id'		 => (int) $id,
+			])?>" class="ui-tabs-anchor">Основные данные</a>
+		</li>
+		<?php
+		$buttonsArgs['history'] = [
+			'href'       => $this->url('default/id', [
+				'controller' => $controller,
+				'action'     => 'history',
+				'id'		 => (int) $id,
+			]),
+			'controller' => $controller,
+			'action'     => 'history',
+			'type'		 => 'li',
+		];
+
+		if ($id > 0)
+		{
+			echo $this->buttons('usersTabs', $buttonsArgs, ['classActive' => $classActiveLi, 'action' => $action]);
+		}
+		?>
+	</ul>
+
+	<div class="ui-tabs-panel ui-widget-content ui-corner-bottom tab-fixed-content">
+		<!-- content for one tab -->
+        <?=$this->partial((in_array($partialTab, ['history']) ? 'template/'.$partialTab : $controller.'/edit/'.$partialTab))?>
+	</div>
+
+</div>
+</div>

@@ -1,0 +1,70 @@
+<?php
+/** @var \Popov\Roles\View\Helper\Roles $rolesHelper */
+$rolesHelper = $this->roles();
+
+$controller = $this->layout()->route->getParam('controller');
+?>
+
+<div class="header-content-layout form-header">
+	<!-- filters -->
+	<form method="post">
+
+		<ul class="line1">
+			<li>
+				<?=$this->buttons('addItem', ['add' => [
+					'href'			=> $this->url('default', [
+						'controller'	=> $controller,
+						'action'		=> 'add'
+					]),
+					'controller'	=> $controller,
+					'action'		=> 'add',
+				]])?>
+			</li>
+			<li>
+				<div class="btn-filters-open" onclick="showHideFilters(this)"><div>Фильтр</div></div>
+			</li>
+		</ul>
+
+		<table id="filters" style="width: 740px">
+			<tbody>
+			<tr>
+				<td><select name="roleId"><?=$rolesHelper->rolesList($filtersSelected['roleId'], '- Роль -')?></select></td>
+				<td><input type="text" name="search" placeholder="Поиск" value="<?=$filtersSelected['search']?>"></td>
+				<td style="width: 200px;">
+					<?php $checkedHtml = $filtersSelected['groupedСity'] ? ' checked=""' : ''; ?>
+					<input type="checkbox" name="groupedСity"<?=$checkedHtml?>> Группировать по городам
+				</td>
+				<td style="width: 200px;">
+					<?php $checkedHtml = $filtersSelected['groupedRole'] ? ' checked=""' : ''; ?>
+					<input type="checkbox" name="groupedRole"<?=$checkedHtml?>> Группировать по роли
+				</td>
+				<td><input type="submit" value="Применить"></td>
+				<td><input type="submit" id="reset_filters" value="Сбросить"></td>
+			</tr>
+			</tbody>
+		</table>
+
+	</form>
+
+	<!-- content -->
+	<?=$this->partial('users/'.$partialTemplate, [
+        'fields'			=> $fields,
+        'users'				=> $users,
+		'permissionBrands'	=> $permissionBrands,
+		'logs'				=> (isset($logs) ? $logs : []),
+		'controller'		=> $controller,
+	])?>
+
+<?php
+$currLayout = $this->viewModel()->getCurrent();
+$paginator = $currLayout->getVariable('paginator');
+
+echo $this->paginationControl($paginator,
+	'Sliding',
+	'pagination/control',
+	['route' => 'default/wildcard', 'params' => [
+		'controller' => $controller,
+		'action' => $this->layout()->route->getParam('action'),
+		'page' => $this->layout()->route->getParam('page'),
+	]]
+); ?>

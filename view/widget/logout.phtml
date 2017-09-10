@@ -1,0 +1,38 @@
+<?php
+/** @var \Magere\ZfcUser\View\Helper\User $userHelper */
+/** @var \Zend\View\Renderer\PhpRenderer $this */
+if (!$this->getHelperPluginManager()->has('user')) {
+    return;
+}
+
+$userHelper = $this->plugin('user');
+$user = $userHelper->current();
+?>
+
+<?php if ($userIdentity = $userHelper->hasIdentity()) : ?>
+<div class="user-profile pull-right">
+    <div class="user-logo">
+        <?php
+        if ($user->getPhoto()) {
+            $photoName = explode('.', $user->getPhoto());
+            $photoExt = '.'.end($photoName);
+            ?>
+            <img src="/files/get/<?= $user->getId() ?>/document/users/file/<?='small'.$photoExt?>">
+            <div class="image-middle hide"></div>
+        <?php } else { ?>
+            <img src="/media/images/nophoto.jpg">
+        <?php } ?>
+    </div>
+    <div class="user-name">
+        <h6><?= $this->simpler($user->getRoles())->asString('name') ?></h6>
+        <span><?= $user->getEmail() ?></span>
+    </div>
+    <a class="logout-btn" onclick="if(confirm('Do you want logout?')) document.location.href='<?= $this->url('default', [
+        'controller'	=> 'user',
+        'action'		=> 'logout'
+    ]) ?>'">
+        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+    </a>
+</div>
+<?php endif ?>
+

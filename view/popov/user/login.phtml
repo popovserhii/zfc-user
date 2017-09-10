@@ -1,0 +1,83 @@
+<?php //header('Content-Type: text/html; charset=utf-8'); ?>
+<?php echo $this->doctype() ?>
+<?php
+$controller = 'user';
+$action = 'login';
+
+$title = '<b>On Record</b>';
+?>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title><?=strip_tags($title)?></title>
+    <!--<meta name="author" content="Agere Company" />
+    <meta name="description" content="Agere Cloud - Business System" />
+    <meta name="keywords" content="e-commerce" />
+    <meta name="application-name" content="Agere Cloud - Business System" />
+-->
+    <meta name="copyright" content="<?php //echo getValueOf("meta_copyright") ?>" />
+    <meta name="robots" content="none" />
+    <meta http-equiv="Content-Language" content="ru" />
+
+    <!--<link rel="stylesheet" href="<?/*= $this->basePath() */?>/media/css/main.min.css?40" type="text/css" />
+    <link  rel="stylesheet" href="<?/*= $this->basePath() */?>/media/css/custom.min.css?40" type="text/css" />-->
+
+    <!--<script src="/media/js/jquery/jquery-1.9.1.min.js"></script>
+    <script src="/media/js/menu-drop-down.js?40"></script>-->
+</head>
+
+<body class="<?=$controller.'-'.$action?>">
+<noscript>Для корректной работы <a href="https://www.google.com.ua/search?q=включить+javascript" target="_blank">включите джава скрипты</a> и обновите страницу</noscript>
+<div class="wrapper">
+
+    <div class="content-wrapper clearfix">
+        <div class="context-layout">
+            <?=$this->form()->openTag($form)?>
+            <table border="0" align="center" class="form-login">
+                <tbody>
+                <tr>
+                    <td width="50%" style="vertical-align: top; height: 400px; background-image: url('/media/images/left_background.jpg'); background-position: right; background-repeat: no-repeat;"></td>
+                    <td valign="top">
+                        <table width="250" cellspacing="0" cellpadding="4" border="0" class="cmsMainText">
+                            <tbody>
+                            <tr>
+                                <td height="30px" colspan="2"><div class="CmsMainHeader">Login to the System</div></td>
+                            </tr>
+                            <tr><td>&nbsp;</td></tr>
+                            <tr>
+                                <td class="labels lable_login">Email</td>
+                            </tr>
+                            <tr>
+                                <td class="input_login"><?=$this->formRow($form->get('email'))?></td>
+                            </tr>
+                            <tr>
+                                <td class="labels lable_login">Password</td>
+                            </tr>
+                            <tr>
+                                <td class="input_login"><?=$this->formPassword($form->get('password')->setAttribute('value', '')).$this->formElementerrors($form->get('password'))?></td>
+                            </tr>
+                            <tr>
+                                <td class="labels lable_login">
+                                    <a onclick="popUpWindow('<?=$this->url('default', [
+                                        'controller'	=> $controller,
+                                        'action'		=> 'forgot-password',
+                                    ])?>', 150, 310)">Forget password?</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="30" align="left" class="buttons" style="padding-left:30px">
+                                    <?=$this->formSubmit()->render($form->get('save')->setAttribute('value', 'Login'))?>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <?=$this->form()->closeTag()?>
+        </div>
+    </div>
+</div>
+</body>
+</html>

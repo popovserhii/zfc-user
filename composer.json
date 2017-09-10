@@ -1,6 +1,6 @@
 {
   "name": "popov/zfc-user",
-  "description": "ZF2 user managment module with prebuild UI",
+  "description": "ZF2 user management module with prebuild UI",
   "type": "zf-module",
   "license": "MIT",
   "keywords": [

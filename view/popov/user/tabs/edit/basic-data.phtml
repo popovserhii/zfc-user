@@ -1,0 +1,226 @@
+<?php
+/** @var \Popov\Agere\View\Helper\Form $formAgereHelper */
+$formAgereHelper = $this->formAgere();
+
+/** @var \Popov\City\View\Helper\CityHelper $cityHelper */
+$cityHelper = $this->city();
+
+/** @var \Popov\Roles\View\Helper\Roles $rolesHelper */
+$rolesHelper = $this->roles();
+
+/** @var \Popov\Department\View\Helper\Department $departmentHelper */
+$departmentHelper = $this->department();
+
+/** @var \Popov\Supplier\View\Helper\Supplier $supplierHelper */
+$supplierHelper = $this->supplier();
+
+$controller = $this->layout()->route->getParam('controller');
+$action = $this->layout()->route->getParam('action');
+
+// var_dump($form); die;
+?>
+
+<div id="tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+	<div id="credit-extend" aria-labelledby="ui-id-2" class="ui-tabs-panel ui-widget-content ui-corner-bottom" style="padding: 2px;width: 70%" aria-expanded="true" aria-hidden="false">
+
+		<?=$this->form()->openTag($form)?>
+		<?=$this->formRow($form->get('id'))?>
+			<fieldset>
+				<legend class="input_heading">Основные данные</legend>
+				<table class="main-calculation-data width tableinput">
+					<tbody>
+					<tr>
+						<td><?=$fields['email']?></td>
+						<td><?=$this->formRow($form->get('email'))?></td>
+					</tr>
+					<tr>
+						<td>Пароль</td>
+						<?php if ($form->get('password')->getValue()) $form->get('password')->setAttribute('required', false); ?>
+						<td><?=$this->formPassword($form->get('password')->setAttribute('value', '')).$this->formElementerrors($form->get('password'))?></td>
+					</tr>
+					<tr>
+						<td><?=$fields['firstName']?></td>
+						<td><?=$this->formRow($form->get('firstName'))?></td>
+					</tr>
+					<tr>
+						<td><?=$fields['lastName']?></td>
+						<td><?=$this->formRow($form->get('lastName'))?></td>
+					</tr>
+					<tr>
+						<td><?=$fields['patronymic']?></td>
+						<td><?=$this->formRow($form->get('patronymic'))?></td>
+					</tr>
+					<tr>
+						<td><?=$fields['phone']?></td>
+						<td><?=$this->formRow($form->get('phone'))?></td>
+					</tr>
+					<tr>
+						<td><?=$fields['phoneWork']?></td>
+						<td><?=$this->formRow($form->get('phoneWork'))?></td>
+					</tr>
+					<tr>
+						<td><?=$fields['phoneInternal']?></td>
+						<td><?=$this->formRow($form->get('phoneInternal'))?></td>
+					</tr>
+					<tr>
+						<td><?=$fields['post']?></td>
+						<td><?=$this->formRow($form->get('post'))?></td>
+					</tr>
+					<tr>
+						<td><?=$fields['dateBirth']?></td>
+						<td><?=$this->formRow($form->get('dateBirth')->setAttribute('class', 'datepicker'))?></td>
+					</tr>
+					<tr>
+						<td><?=$fields['dateEmployment']?></td>
+						<td><?=$this->formRow($form->get('dateEmployment')->setAttribute('class', 'datepicker'))?></td>
+					</tr>
+					<!--<tr>
+						<td><?/*=$fields['departmentId']*/?></td>
+						<td>
+							<?php
+/*							$formName = $form->get('departmentId');
+							*/?>
+							<select<?/*=$formAgereHelper->strAttributes($formName->getAttributes())*/?>><?/*=$departmentHelper->departmentList($formName->getValue(), 'Выберите отдел', '')*/?></select>
+							<?/*=$this->formElementerrors($formName)*/?>
+						</td>
+					</tr>-->
+					<tr>
+						<td><?=$fields['supplierId']?></td>
+						<td>
+							<?php
+							$formName = $form->get('supplierId');
+							?>
+							<select<?=$formAgereHelper->strAttributes($formName->getAttributes())?>><?=$supplierHelper->supplierList($formName->getValue(), 'Выберите поставщика')?></select>
+							<?=$this->formElementerrors($formName)?>
+						</td>
+					</tr>
+					<tr>
+						<td><?=$fields['cityId']?></td>
+						<td>
+							<?php
+							$formName = $form->get('cityId[]');
+							$formName2 = $form->get('cityId');
+							?>
+							<select <?= $formAgereHelper->strAttributes($formName->getAttributes()) ?>>
+                                <?= $cityHelper->cityList(
+                                    ($formName2->getValue()
+                                        ? $formName2->getValue()
+                                        : $formName->getValue()),
+                                    'Выберите город',
+                                    '') ?>
+                            </select>
+							<?= $this->formElementerrors($formName2) ?>
+						</td>
+					</tr>
+					<tr>
+						<td><?=$fields['showIndex']?></td>
+						<td><?=$this->formRow($form->get('showIndex'))?></td>
+					</tr>
+					<tr>
+						<td><?=$fields['roleId']?></td>
+						<td>
+							<?php
+							$formName = $form->get('roleId[]');
+							$formName2 = $form->get('roleId');
+							?>
+							<select<?=$formAgereHelper->strAttributes($formName->getAttributes())?>><?=$rolesHelper->rolesList(($formName2->getValue() ? $formName2->getValue() : $formName->getValue()), 'Выберите роль')?></select>
+							<?=$this->formElementerrors($formName2)?>
+						</td>
+					</tr>
+					<tr>
+						<td><?=$fields['notation']?></td>
+						<td>
+							<textarea name="notation"><?=$form->get('notation')->getValue()?></textarea>
+						</td>
+					</tr>
+                    <tr>
+                        <td><?=$fields['sendEmails']?></td>
+                        <td><?=$this->formRow($form->get('sendEmails'))?></td>
+                    </tr>
+					</tbody>
+				</table>
+			</fieldset>
+
+			<fieldset>
+				<legend class="input_heading">Доступ к марки машин</legend>
+				<table class="main-calculation-data width tableinput hover-row">
+					<tbody>
+					<?php
+					$checkboxes = '';
+					$isCheckedAll = true;
+
+					foreach ($brands as $item) {
+						$permissionAccessId = null;
+						$access = null;
+
+						if (isset($itemsUser[$item->getId()]))
+						{
+							$permissionAccessId = $itemsUser[$item->getId()][0]->getId();
+							$access = $itemsUser[$item->getId()][0]->getAccess();
+						}
+
+						$checked = $access ? ' checked' : '';
+
+						if ($checked == '')
+						{
+							$isCheckedAll = false;
+						}
+
+						$checkboxes .=
+						'<tr>
+							<td>'.$item->getName().'</td>
+							<td>
+								<input type="hidden" name="permissionAccessId['.$item->getId().']" value="'.$permissionAccessId.'">
+								<input type="checkbox" name="permissionAccess['.$item->getId().']"'.$checked.'>
+							</td>
+						</tr>';
+					} ?>
+						<tr>
+							<?php
+							if ($isCheckedAll)
+							{
+								$currentLable = 'Снять все выделения';
+								$checked = ' checked';
+							}
+							else
+							{
+								$currentLable = 'Отметить все';
+								$checked = '';
+							}
+							?>
+							<td><b><?=$currentLable?></b></td>
+							<td><input type="checkbox" onclick="mark_all_checkbox(this, 'permissionAccess')"<?=$checked?>></td>
+						</tr>
+						<?=$checkboxes?>
+					</tbody>
+				</table>
+			</fieldset>
+
+			<div class="button-place">
+				<?php
+				$buttonsArgs['save'] = [
+					'type'       => 'submit',
+					'attr'       => [
+						'class' => 'button',
+					],
+					'controller' => $controller,
+					'action'     => $action,
+				];
+
+				echo $this->buttons('saveItem', $buttonsArgs);
+				?>
+			</div>
+
+		<?=$this->form()->closeTag()?>
+
+	</div>
+</div>
+
+<script>
+	/*jQuery('[name=dateBirth], [name=dateEmployment]').datepicker({
+		changeMonth: true,
+		changeYear: true,
+		yearRange: '1920:',
+		dateFormat: 'dd/mm/yy'
+	});*/
+</script>

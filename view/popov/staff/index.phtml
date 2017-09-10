@@ -1,0 +1,210 @@
+<?php
+use Agere\Date\DateTime as AgereDateTime;
+
+/** @var \Popov\City\View\Helper\CityHelper $cityHelper */
+$cityHelper = $this->city();
+
+/** @var \Popov\Department\View\Helper\Department $departmentHelper */
+//$departmentHelper = $this->department();
+
+/** @var \Popov\Supplier\View\Helper\Supplier $supplierHelper */
+$supplierHelper = $this->supplier();
+
+/** @var \MAgere\Documents\View\Helper\Documents $documentsHelper */
+$documentsHelper = $this->documents();
+
+/** @var \MAgere\ZfcUser\View\Helper\User $userHelper */
+$userHelper = $this->user();
+
+$controller = $this->layout()->route->getParam('controller');
+?>
+
+<script src="/media/js/drop-down.js"></script>
+<script type="text/javascript">
+	$(function (){
+		$(".header-content-layout").closest("#content").addClass("users-page");
+	});
+</script>
+
+<div class="header-content-layout form-header users">
+	<!-- filters -->
+	<form method="post">
+
+		<ul class="line1">
+			<li>
+				<div class="btn-filters-open" onclick="showHideFilters(this)"><div>Фильтр</div></div>
+			</li>
+		</ul>
+
+		<table id="filters" style="width: 770px">
+			<tbody>
+			<tr>
+				<td><select name="cityId"><?=$cityHelper->cityList($filtersSelected['cityId'], '- Город -')?></select></td>
+				<!--<td><select name="departmentId"><?/*=$departmentHelper->departmentList($filtersSelected['departmentId'], '- Отдел -')*/?></select></td>-->
+				<td><select name="supplierId"><?=$supplierHelper->supplierList($filtersSelected['supplierId'], '- Поставщик -')?></select></td>
+				<td><input type="text" name="search" placeholder="Поиск" value="<?=$filtersSelected['search']?>"></td>
+				<td><input type="submit" value="Применить"></td>
+				<td><input type="submit" id="reset_filters" value="Сбросить"></td>
+			</tr>
+			</tbody>
+		</table>
+
+	</form>
+</div>
+
+<div class="users-list">
+	<?php foreach ($users as $user) : ?>
+	<div class="staff-cart">
+
+		<div class="staff-header clearfix">
+
+			<div class="staff-photo">
+				<?php
+				if ($user->getPhoto()) {
+					$photoName = explode('.', $user->getPhoto());
+					$photoExt = '.' . end($photoName);
+					?>
+					<img src="/files/get/<?=$user->getId()?>/document/users/file/<?='small'.$photoExt?>" width="<?=$sizesPhoto['small']?>" class="image-small" data-width="<?=$sizesPhoto['middle']?>" data-image="/files/get/<?=$user->getId()?>/document/users/file/<?='middle'.$photoExt?>">
+					<div class="image-middle hide"></div>
+				<?php } else { ?>
+					<img src="/media/images/nophoto.jpg" width="<?=$sizesPhoto['small']?>" height="<?=$sizesPhoto['small']?>">
+				<?php } ?>
+			</div>
+
+			<div class="staff-info">
+				<h3><?= $user->getName() ?></h3>
+				<p><?//= $user->getDepartment() ?></p>
+				<p><?= $user->getPost() ?></p>
+			</div>
+
+		</div>
+
+		<?php
+		//$dateBirthFormat = AgereDateTime::getDateFormat($user['dateBirth'], 'd.m');
+		$dateBirthFormat = $user->getDateBirth() ? $user->getDateBirth()->format('d.m') : '';
+		$class = ($dateBirthFormat == date('d.m')) ? ' happy' : '';
+		?>
+		<div class="staff-date clearfix">
+			<div class="staff-birthday<?=$class?>">
+				<p class="date-title"><?=$fields['dateBirth']?></p>
+				<p><?=$dateBirthFormat?></p>
+			</div>
+			<div  class="staff-birthday">
+				<p class="date-title">Принят на работу</p>
+				<p><?= $user->getDateEmployment() ? $user->getDateEmployment()->format('d.m.y') : '' ?></p>
+			</div>
+		</div>
+
+		<div class="staff-body">
+			<div class="staff-info-cities hide">
+				<?php
+				$tmp = [];
+
+				//if ($user->getShowIndex() == 'city' && isset($cityItems[$user->getId()]))
+				if ($user->getShowIndex() == 'city') {
+					foreach ($user->getCities() as $city) {
+						//$tmp[] = $city->getCity() . ($city->getCompany() ? ', ' . $city->getCompany() : '');
+						$tmp[] = $city->getCity();
+					}
+				} /*else if ($user->getShowIndex() == 'supplier') {
+					$tmp[] = $user->getSupplier();
+				}*/
+
+				echo '<div>'.implode('</div><div>', $tmp).'</div>';
+				?>
+			</div>
+			<?php if (count($tmp) > 1) { ?>
+				<div class="show-more"></div>
+			<?php } ?>
+
+			<div class="staff-info-contacts">
+                <?= $fields['phone'] . ': ' . $user->getPhone() ?><br>
+                <?= $fields['phoneWork'] . ': ' . $user->getPhoneWork() ?><br>
+				<?php if ($user->getPhoneInternal()) { ?>
+                    <?= $fields['phoneInternal'] . ': ' . $user->getPhoneInternal() ?><br>
+				<?php } ?>
+				<a href="mailto:<?= $user->getEmail() ?>"><?= $user->getEmail() ?></a>
+			</div>
+
+			<?php if ($user->getNotation()) : ?>
+                <div class="staff-info-notation hide"><?= $fields['notation'] . ': ' . $user->getNotation() ?></div>
+				<?php if (strlen($user->getNotation()) > 27) : ?>
+					<div class="show-more"></div>
+				<?php endif; ?>
+			<?php endif; ?>
+		</div>
+
+		<div class="staff-atention clearfix">
+			<?php
+			$_user = ['id' => $user->getId()];
+
+			foreach ($user->getRoles() as $role) {
+				//$_user['roleId'][] = $role[0]->getRoleId();
+				$_user['roleId'][] = $role->getId();
+				$_user['resource'][] = $role->getResource();
+			}
+			?>
+			<div class="staff-message">Непросмотренных документов: <?=$documentsHelper->numberUnread($_user)?></div>
+			<div class="staff-edit clearfix">
+				<input type="hidden" name="id" value="<?=$user->getId()?>">
+
+				<?php
+				$buttonsArgs['delete'] = [
+					'href'			=> $this->url('default/id', [
+						'controller'	=> $controller,
+						'action'		=> 'delete',
+						'id'			=> $user->getId()
+					]),
+					'class'			=> $controller,
+					'controller'	=> $controller,
+					'action'		=> 'delete',
+				];
+
+				echo $this->buttons('deleteItem2', $buttonsArgs);
+				?>
+
+				<?php
+				$buttonsArgs['save'] = [
+					'type'       => 'submit',
+					'attr'       => [
+						'class' => 'button',
+					],
+					'controller' => $controller,
+					'action'     => 'edit',
+				];
+
+				$buttonSave = $this->buttons('saveItem', $buttonsArgs, ['id' => $user->getId(), 'page' => $controller.'/edit']);
+
+				$buttonsArgs['edit'] = [
+					'href'			=> $this->url('default/id', [
+						'controller'	=> $controller,
+						'action'		=> 'edit',
+						'id'			=> $user->getId()
+					]),
+					'class'			=> $controller,
+					'controller'	=> $controller,
+					'action'		=> 'edit',
+				];
+
+				$button = $this->buttons('editItem2', $buttonsArgs);
+				echo $buttonSave ? $button : str_replace('/media/images/document_edit2.jpg', '/media/images/get_info2.png', $button);
+				?>
+			</div>
+		</div>
+	</div>
+	<?php endforeach; ?>
+</div>
+
+<?php
+$currLayout = $this->viewModel()->getCurrent();
+$paginator = $currLayout->getVariable('paginator');
+
+echo $this->paginationControl($paginator,
+	'Sliding',
+	'pagination/control',
+	['route' => 'default/wildcard', 'params' => [
+		'controller' => $controller,
+		'action' => $this->current('route')->getParam('action'),
+		'page' => $this->current('route')->getParam('page'),
+	]]
+); ?>
