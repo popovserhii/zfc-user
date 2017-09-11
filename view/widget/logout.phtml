@@ -9,7 +9,7 @@ $userHelper = $this->plugin('user');
 $user = $userHelper->current();
 ?>
 
-<?php if ($user->getId()) : ?>
+<?php if ($user && $user->getId()) : ?>
 <div class="user-profile pull-right">
     <div class="user-logo">
         <?php
