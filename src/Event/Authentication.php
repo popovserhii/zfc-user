@@ -20,6 +20,8 @@ use Zend\Session\Container as SessionContainer;
 use Zend\ServiceManager\Exception;
 use Zend\Stdlib\ArrayUtils;
 use Zend\Authentication\AuthenticationService;
+use Zend\Permissions\Acl\Resource\GenericResource;
+use Zend\Permissions\Acl\Role\GenericRole;
 
 use Popov\ZfcUser\Model\User;
 use Popov\ZfcUser\Controller\Plugin\UserAuthentication;
@@ -169,7 +171,6 @@ class Authentication
         // Всі інші дії авторизіції; взяти їх з \Popov\Users\Controller\UsersController::loginAction
     }
 
-
 	public function basicAuthentication($login, $password) {
 		//\Zend\Debug\Debug::dump([$login, $password]);die(__METHOD__);
 		if ($login && $password) {
@@ -221,7 +222,7 @@ class Authentication
 		}*/
 
 		foreach ($this->roles as $role => $resources) {
-			$role = new \Zend\Permissions\Acl\Role\GenericRole($role);
+			$role = new GenericRole($role);
 			$this->acl->addRole($role);
 			//adding resources
 			foreach ($resources as $resource) {
@@ -254,22 +255,16 @@ class Authentication
 	/**
 	 * preDispatch Event Handler
 	 *
-	 * @param \Zend\Mvc\MvcEvent $event
+	 * @param MvcEvent $event
+     * @return bool
 	 * @throws \Exception
-	 * @todo Зробити повний рефакторинг прав доступу. Невідомо чому тут додається $defaultResource...
 	 */
     public function preDispatch(MvcEvent $event) {
         static $defaultResource;
 
-
-        //@todo - Should we really use here and Controller Plugin?
-        $userAuth = $this->getUserAuthenticationPlugin();
-        $viewModel = $event->getViewModel();
-        //$viewModel->permissionDenied = true;
-        //$this->_Acl = $viewModel->acl;
+        #$viewModel = $event->getViewModel();
 
         $roleMnemos = [Acl::DEFAULT_ROLE];
-
         $access = Acl::getAccess();
         $accessTotal = Acl::getAccessTotal();
 
@@ -292,7 +287,7 @@ class Authentication
                 // Set default resource
                 $defaultResource = ['files/get'];
                 foreach ($defaultResource as $target) {
-                    $this->acl->addResource(new \Zend\Permissions\Acl\Resource\GenericResource($target));
+                    $this->acl->addResource(new GenericResource($target));
                     $this->acl->allow($roleMnemos, $target, Acl::getAccessTotal());
                 }
             }
@@ -346,9 +341,9 @@ class Authentication
             return true;
         }
 
-        if ($userAuth->hasIdentity()) {
+        if ($userPlugin->hasIdentity()) {
             $event->stopPropagation(true); // very important string
-            $viewModel->permissionDenied = false;
+            //$viewModel->permissionDenied = false;
 
             return false;
         } else {
