@@ -3,6 +3,7 @@ namespace Popov\ZfcUser\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Popov\ZfcCore\Model\DomainAwareTrait;
 
 /**
@@ -405,5 +406,24 @@ class User {
         $this->roles = $roles;
 
         return $this;
+    }
+
+    /**
+     * @param Collection $roles
+     */
+    public function addRoles(Collection $roles)
+    {
+        foreach ($roles as $role) {
+            $role->getUsers()->add($this);
+            $this->roles->add($role);
+        }
+    }
+
+    public function removeRoles(Collection $roles)
+    {
+        foreach ($roles as $role) {
+            $role->getUsers()->clear();
+            $this->roles->removeElement($role);
+        }
     }
 }

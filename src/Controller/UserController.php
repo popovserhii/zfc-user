@@ -12,14 +12,16 @@ use Zend\Session\Container as SessionContainer;
 use Popov\Agere\File\Transfer\Adapter\Http;
 use Popov\Agere\File\Resize\Adapter\GbResize;
 use Popov\Agere\String\StringUtils as AgereString;
-use Popov\ZfcUser\Form\User as UserForm;
+//use Popov\ZfcUser\Form\User as UserForm;
 use Popov\ZfcUser\Form\Login as LoginForm;
+use Popov\ZfcUser\Form\UserForm;
 use Popov\ZfcUser\Form\ForgotPassword as ForgotPasswordForm;
 use Popov\ZfcUser\Form\ChangePassword as ChangePasswordForm;
 use Popov\ZfcUser\Model\User as User;
 use Popov\ZfcRole\Model\Role;
 //use Popov\City\Model\City;
 use Popov\ZfcUser\Controller\Plugin\UserAuthentication;
+use Popov\ZfcUser\Service\UserService;
 
 class UserController extends AbstractActionController {
 
@@ -31,6 +33,16 @@ class UserController extends AbstractActionController {
     public $sessionNameFilters = 'userFilters';
     public $limit = 36;
 
+    protected $formElementManager;
+
+    public function getFormElementManager()
+    {
+        if (!$this->formElementManager) {
+            $this->formElementManager = $this->serviceLocator->get('FormElementManager');
+
+        }
+        return $this->formElementManager;
+    }
 
     public function indexAction($action = 'index', $sessionNameFilters = '')
     {
@@ -182,6 +194,58 @@ class UserController extends AbstractActionController {
 
     public function editAction()
     {
+        $sm = $this->serviceLocator;
+
+        $request = $this->getRequest();
+        $route = $this->getEvent()->getRouteMatch();
+        /** @var UserService $service */
+        $service = $sm->get($this->serviceName);
+        $fm = $this->getFormElementManager();
+
+        /** @var User $user */
+        $user = ($user = $service->find($id = (int) $route->getParam('id')))
+            ? $user
+            : $service->getObjectModel();
+
+        //$first = $service->getObjectModel();
+
+        /** @var UserForm $form */
+        $form = $fm->get(UserForm::class);
+        $form->bind($user);
+
+        if ($request->isPost()) {
+            $form->setData($request->getPost());
+            if ('' === $form->get('user')->get('password')->getValue()) {
+                //$form->getInputFilter()->remove('password');
+                $form->getInputFilter()->get('user')->remove('password');
+            }
+
+            if ($form->isValid()) {
+                $om = $service->getObjectManager();
+                $om->persist($user);
+                $om->flush();
+
+                $this->getEventManager()->trigger('edit.post', $user);
+
+                $msg = 'User have been successfully saved';
+                $this->flashMessenger()->addSuccessMessage($msg);
+
+                $this->redirect()->toRoute('default', [
+                    'controller' => $route->getParam('controller'),
+                ]);
+            } else {
+                $msg = 'Form is invalid. Please, check the correctness of the entered data';
+                $this->flashMessenger()->addErrorMessage($msg);
+            }
+        }
+
+        return (new ViewModel([
+            'form' => $form,
+        ]));
+    }
+
+    public function editOldAction()
+    {
         $request = $this->getRequest();
         $route = $this->getEvent()->getRouteMatch();
         $sm = $this->getServiceLocator();
@@ -193,11 +257,12 @@ class UserController extends AbstractActionController {
         $target = 'store';
         $type = 'controller';
         // Used roleId with possible user, role, group
-        $maskId = AgereString::getStringAssocDigit($id, 'user');
+        //$maskId = AgereString::getStringAssocDigit($id, 'user');
 
-        /** @var \Popov\ZfcUser\Service\UsersService $service */
+        /** @var UserService $service */
         $service = $sm->get($this->serviceName);
-        $user = $service->getItem($id, 'id', '0');
+        //$user = $service->getItem($id, 'id', '0');
+        $user = $service->find($id);
 
         /** @var \Popov\ZfcUser\Service\UsersCityService $serviceUsersCity */
         //$serviceUsersCity = $sm->get('UsersCityService');
