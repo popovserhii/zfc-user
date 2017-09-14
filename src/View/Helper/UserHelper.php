@@ -111,21 +111,11 @@ class UserHelper extends AbstractHelper implements ServiceLocatorAwareInterface 
 	}
 
 	/**
-	 * @param string $key
-	 * @param Service $service
-	 * @deprecated
-	 */
-	public function addService($key, $service) {
-		die('You really have to use: ' . __METHOD__);
-		$this->getUserPlugin()->addService($key, $service);
-	}
-
-	/**
 	 * @return mixed|null
 	 * @deprecated
 	 */
 	public function getUser() {
-        // $currentUser contain only email address, @see Popov\Users\Controller\UsersController::loginAction:498
+	    throw new \Exception(__METHOD__ . ' is @deprecated use current instead');
 		$currentUser = $this->getUserPlugin()->getAuthService()->getIdentity();
 		if (!is_null($currentUser)) {
 			//if (strpos($currentUser['role'], '{') === false) {
