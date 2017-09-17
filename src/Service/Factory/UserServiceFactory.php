@@ -22,8 +22,9 @@ class UserServiceFactory
 
         if ($authService->hasIdentity()) {
             /** @var \Doctrine\ORM\EntityManager $om */
-            //$om = $container->get('Doctrine\ORM\EntityManager');
+            $om = $container->get('Doctrine\ORM\EntityManager');
             $user = $authService->getIdentity();
+            $user = $om->merge($user);
             //$user = $om->find(User::class, $dataUser['id']);
             $userService->setCurrent($user);
         }

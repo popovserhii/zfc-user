@@ -110,7 +110,7 @@ class User {
      *
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Popov\ZfcRole\Model\Role", inversedBy="users")
+     * @ORM\ManyToMany(targetEntity="Popov\ZfcRole\Model\Role", inversedBy="users", cascade={"persist"})
      * @ORM\JoinTable(name="users_roles")
      */
 	private $roles;

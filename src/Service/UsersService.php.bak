@@ -527,7 +527,7 @@ class UsersService extends AbstractEntityService implements EventManagerAwareInt
     }
 
     /**
-     * Module Files
+     * Module FileHelper
      *
      * @param $class
      * @param $params
