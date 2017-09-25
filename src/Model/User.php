@@ -48,7 +48,7 @@ class User {
 
     /**
      * @var string
-     * @ORM\Column(name="patronymic", type="string", nullable=false)
+     * @ORM\Column(name="patronymic", type="string", nullable=true)
      */
 	private $patronymic;
 
@@ -60,19 +60,19 @@ class User {
 
     /**
      * @var string
-     * @ORM\Column(name="phoneWork", type="string", length=13, nullable=false)
+     * @ORM\Column(name="phoneWork", type="string", length=13, nullable=true)
      */
 	private $phoneWork;
 
     /**
      * @var string
-     * @ORM\Column(name="phoneInternal", type="string", length=13, nullable=false)
+     * @ORM\Column(name="phoneInternal", type="string", length=13, nullable=true)
      */
 	private $phoneInternal;
 
     /**
      * @var string
-     * @ORM\Column(name="post", type="string", nullable=false)
+     * @ORM\Column(name="post", type="string", nullable=true)
      */
 	private $post;
 
@@ -90,13 +90,13 @@ class User {
 
     /**
      * @var string
-     * @ORM\Column(name="photo", type="string", nullable=false)
+     * @ORM\Column(name="photo", type="string", nullable=true)
      */
 	private $photo;
 
     /**
      * @var string
-     * @ORM\Column(name="notation", type="string", nullable=false)
+     * @ORM\Column(name="notation", type="string", nullable=true)
      */
 	private $notation;
 

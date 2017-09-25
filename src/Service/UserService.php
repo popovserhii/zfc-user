@@ -14,6 +14,8 @@ use Popov\ZfcUser\Model\User as User;
 
 class UserService extends DomainServiceAbstract
 {
+    const SALT = 'G6t8?Mj$7h#ju';
+
     protected $entity = User::class;
 
     /** @var User */
@@ -38,15 +40,28 @@ class UserService extends DomainServiceAbstract
         return $this->current;
     }
 
-    /*public function setAuthAdapter($authAdapter)
+    /**
+     * @param string $password
+     * @return string
+     */
+    public static function getHashPassword($password)
     {
-        $this->authAdapter = $authAdapter;
+        return ($password) ? md5($password . self::SALT) : static::generatePassword();
     }
 
-    public function getAuthAdapter()
+    public static function generatePassword()
     {
-        return $this->authAdapter;
-    }
+        $password = '';
 
-    */
+        $len = 6;
+        $str = 'qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM';
+        $strLen = strlen($str) - 1;
+
+        for ($i = 0; $i < $len; ++ $i) {
+            $j = rand(0, $strLen);
+            $password .= $str[$j];
+        }
+
+        return $password;
+    }
 }

@@ -22,7 +22,12 @@ class AuthenticationFactory
         $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
         $authService = $sm->get('UserAuthentication')->getAuthService();
 
+        $manager = $sm->get('ModuleManager');
+        $modules = $manager->getLoadedModules();
+
+
         $auth = new Authentication();
+        $auth->setUsePermission(isset($modules['Popov\ZfcPermission']));
         $auth->setAuthService($authService);
         $auth->setRequest($request);
         $auth->setConfig($config);

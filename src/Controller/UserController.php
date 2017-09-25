@@ -1,8 +1,8 @@
 <?php
 namespace Popov\ZfcUser\Controller;
 
-use Popov\Permission\Model\Permission;
-use Popov\Permission\Model\PermissionAccess;
+use Popov\ZfcPermission\Model\Permission;
+use Popov\ZfcPermission\Model\PermissionAccess;
 use Popov\ZfcUser\Acl\Acl;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\ServiceManager\ServiceManager;
@@ -22,7 +22,11 @@ use Popov\ZfcRole\Model\Role;
 //use Popov\City\Model\City;
 use Popov\ZfcUser\Controller\Plugin\UserAuthentication;
 use Popov\ZfcUser\Service\UserService;
+use Popov\ZfcEntity\Controller\Plugin\EntityPlugin;
 
+/**
+ * @method EntityPlugin entity($context = null)
+ */
 class UserController extends AbstractActionController {
 
     public $serviceName = 'UserService';
@@ -155,7 +159,7 @@ class UserController extends AbstractActionController {
         $type = 'controller';
 
         // Table permission_access
-        /** @var \Popov\Permission\Service\PermissionAccessService $servicePermissionAccess */
+        /** @var \Popov\ZfcPermission\Service\PermissionAccessService $servicePermissionAccess */
         $servicePermissionAccess = $locator->get('PermissionAccessService');
         $permissionBrands = ($action == 'index' && $users) ? $servicePermissionAccess->getItemsByRoleId($target, $type, $users) : [];
 
@@ -185,11 +189,12 @@ class UserController extends AbstractActionController {
 
     public function addAction()
     {
-        $this->layout('layout/home');
+        //$this->layout('layout/home');
 
-        $viewModel = new ViewModel();
+        /*$viewModel = new ViewModel();
         $viewModel->setVariables($this->editAction());
-        return $viewModel->setTemplate('magere/users/edit.phtml');
+        return $viewModel->setTemplate('popov/user/edit.phtml');*/
+        return $this->editAction()->setTemplate('popov/user/edit.phtml');
     }
 
     public function editAction()
@@ -207,31 +212,34 @@ class UserController extends AbstractActionController {
             ? $user
             : $service->getObjectModel();
 
-        //$first = $service->getObjectModel();
-
         /** @var UserForm $form */
         $form = $fm->get(UserForm::class);
         $form->bind($user);
 
         if ($request->isPost()) {
             $form->setData($request->getPost());
-            if ('' === $form->get('user')->get('password')->getValue()) {
+            if ('' === ($password = $form->get('user')->get('password')->getValue())) {
                 //$form->getInputFilter()->remove('password');
                 $form->getInputFilter()->get('user')->remove('password');
             }
 
             if ($form->isValid()) {
+                if ($password) { // password is send by POST
+                    $user->setPassword(UserService::getHashPassword($password));
+                }
+
                 $om = $service->getObjectManager();
                 $om->persist($user);
                 $om->flush();
 
-                $this->getEventManager()->trigger('edit.post', $user);
+                $this->getEventManager()->trigger($route->getParam('action') . '.post', $user, ['password' => $password]);
 
-                $msg = 'User have been successfully saved';
+                $msg = 'User has been successfully saved';
                 $this->flashMessenger()->addSuccessMessage($msg);
 
                 $this->redirect()->toRoute('default', [
-                    'controller' => $route->getParam('controller'),
+                    //'controller' => $route->getParam('controller'),
+                    'controller' => 'index', //@TODO implement UserGrid
                 ]);
             } else {
                 $msg = 'Form is invalid. Please, check the correctness of the entered data';
@@ -270,7 +278,7 @@ class UserController extends AbstractActionController {
         /** @var \Popov\ZfcUser\Service\UserRoleService $serviceUsersRoles */
         //$serviceUsersRoles = $sm->get('UsersRolesService');
 
-        /** @var \Popov\Permission\Service\PermissionAccessService $servicePermissionAccess */
+        /** @var \Popov\ZfcPermission\Service\PermissionAccessService $servicePermissionAccess */
         $servicePermissionAccess = $sm->get('PermissionAccessService');
 
         $fields = [/*'departmentId', */

@@ -52,6 +52,13 @@ class Authentication
 
     protected $adapter;
 
+    /**
+     * Use Permission Module for access
+     *
+     * @var bool
+     */
+    protected $usePermission = false;
+
     protected $accessDefault = 6;
 
     protected $denyDefault = 0;
@@ -74,6 +81,13 @@ class Authentication
     public function getRequest()
     {
         return $this->request;
+    }
+
+    public function setUsePermission($usePermission)
+    {
+        $this->usePermission = $usePermission;
+
+        return $this;
     }
 
     /**
@@ -367,15 +381,16 @@ class Authentication
 	/**
 	 * @todo: Implement more perfect structure
 	 * @param $dbAdapter
+	 * @param $usePermission
 	 * @return mixed
 	 */
-	public function getDbRoles($dbAdapter) {
+	public function getDbRoles($dbAdapter, $usePermission = false) {
         $this->roles = ArrayUtils::merge($this->getConfig()['acl'], $this->roles);
 
         $resultRolesArray = $this->getResultRolesArray($dbAdapter);
 
         // is permission module enabled
-        if (!class_exists(\Popov\ZfcPermission\Module::class)) {
+        if (!$usePermission) {
             return $this->roles;
         }
 
@@ -424,6 +439,10 @@ SQL;
 						'access' => $accessDefault,
 					];
 				} else {
+                    $this->roles[$result['mnemo']][] = [
+                        'target' => $result['resource'],
+                        'access' => $accessDefault,
+                    ];
 					$resultRolesArray[$result['id']] = $result;
 				}
 			}
@@ -434,6 +453,10 @@ SQL;
 
 	public function getDbPage(MvcEvent $e, $params) {
 		static $accessDefault = 6;
+
+		if (!$this->usePermission) {
+		    return;
+        }
 
 		$sm = $e->getApplication()->getServiceManager();
 		$dbAdapter = $this->getDbAdapter();

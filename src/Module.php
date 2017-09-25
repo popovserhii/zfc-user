@@ -30,18 +30,20 @@ class Module {
 		$eventManager = $e->getApplication()->getEventManager();
 		$sm = $e->getApplication()->getServiceManager();
 		$sharedEvents = $eventManager->getSharedManager();
-        $vhm = $sm->get('ViewHelperManager');
 
-        $this->attachEvents($e);
-        /** @var Authentication $auth */
-        $this->auth = $auth = $sm->get(Authentication::class);
-        $this->userHelper = $vhm->get('user');
 
 
         if ($e->getRequest() instanceof HttpRequest
-            && (false === strpos($e->getRequest()->getUri()->getPath(),
-                    'soap')) // @todo Придумати як видалити цю перевірку
+            && (false === strpos($e->getRequest()->getUri()->getPath(), 'soap')) // @todo Придумати як видалити цю перевірку
         ) {
+
+            $vhm = $sm->get('ViewHelperManager');
+
+            $this->attachEvents($e);
+            /** @var Authentication $auth */
+            $this->auth = $auth = $sm->get(Authentication::class);
+            $this->userHelper = $vhm->get('user');
+
             $auth->init();
 
             $sharedEvents->attach(\Zend\Mvc\Controller\AbstractActionController::class, 'dispatch', [
@@ -49,7 +51,7 @@ class Module {
                 'mvcPreDispatch',
             ], 1000); //@todo - Go directly to User\Event\Authentication
         } elseif ($e->getRequest() instanceof ConsoleRequest) {
-            $auth->initCron();
+            #$auth->initCron();
         }
     }
 
