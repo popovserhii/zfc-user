@@ -2,37 +2,20 @@
 /**
  * File for Acl Class
  *
- * @category  User
- * @package   User_Acl
- * @author    Marco Neumann <webcoder_at_binware_dot_org>
+ * @category  Popov
+ * @package   Popov_ZfcUser
+ * @author    Serhii Popov <popow_dot_serhii_at_gmail_dot_com>
  * @copyright Copyright (c) 2011, Marco Neumann
  * @license   http://binware.org/license/home/type:new-bsd New BSD License
- */
-/**
- * @namespace
  */
 namespace Popov\ZfcUser\Acl;
 
-/**
- * @uses Zend\Acl\Acl
- * @uses Zend\Acl\Role\GenericRole
- * @uses Zend\Acl\Resource\GenericResource
- */
-use Zend\Permissions\Acl\Acl as ZendAcl,
-    Zend\Permissions\Acl\Role\GenericRole as Role,
-    Zend\Permissions\Acl\Resource\GenericResource as Resource,
-    Zend\Permissions\Acl\Role\RoleInterface,
-    Zend\Permissions\Acl\Resource\ResourceInterface;
+use Zend\Permissions\Acl\Acl as ZendAcl;
+//use Zend\Permissions\Acl\Role\GenericRole as Role;
+//use Zend\Permissions\Acl\Resource\GenericResource as Resource;
+use Zend\Permissions\Acl\Role\RoleInterface;
+use Zend\Permissions\Acl\Resource\ResourceInterface;
 
-/**
- * Class to handle Acl
- * This class is for loading ACL defined in a config
- *
- * @category User
- * @package  User_Acl
- * @copyright Copyright (c) 2011, Marco Neumann
- * @license   http://binware.org/license/home/type:new-bsd New BSD License
- */
 class Acl extends ZendAcl
 {
     /**

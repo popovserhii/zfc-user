@@ -1,10 +1,9 @@
-<?php //header('Content-Type: text/html; charset=utf-8'); ?>
 <?php echo $this->doctype() ?>
 <?php
-$controller = 'user';
-$action = 'login';
+//$controller = 'user';
+//$action = 'login';
 
-$title = '<b>On Record</b>';
+//$title = '<b>On Record</b>';
 ?>
 <html>
 <head>
@@ -26,17 +25,16 @@ $title = '<b>On Record</b>';
     <script src="/media/js/menu-drop-down.js?40"></script>-->
 </head>
 
-<body class="<?=$controller.'-'.$action?>">
+<body class="<?= $this->current('resource') . '-' . $this->current('action') ?>">
 <noscript>Для корректной работы <a href="https://www.google.com.ua/search?q=включить+javascript" target="_blank">включите джава скрипты</a> и обновите страницу</noscript>
 <div class="wrapper">
-
     <div class="content-wrapper clearfix">
         <div class="context-layout">
             <?=$this->form()->openTag($form)?>
             <table border="0" align="center" class="form-login">
                 <tbody>
                 <tr>
-                    <td width="50%" style="vertical-align: top; height: 400px; background-image: url('/media/images/left_background.jpg'); background-position: right; background-repeat: no-repeat;"></td>
+                    <td width="50%" style="vertical-align: top; height: 400px; background-image: url('/assets/images/left_background.jpg'); background-position: right; background-repeat: no-repeat;"></td>
                     <td valign="top">
                         <table width="250" cellspacing="0" cellpadding="4" border="0" class="cmsMainText">
                             <tbody>
@@ -54,11 +52,11 @@ $title = '<b>On Record</b>';
                                 <td class="labels lable_login">Password</td>
                             </tr>
                             <tr>
-                                <td class="input_login"><?=$this->formPassword($form->get('password')->setAttribute('value', '')).$this->formElementerrors($form->get('password'))?></td>
+                                <td class="input_login"><?=$this->formPassword($form->get('password')->setAttribute('value', '')).$this->formElementErrors($form->get('password'))?></td>
                             </tr>
                             <tr>
                                 <td class="labels lable_login">
-                                    <a onclick="popUpWindow('<?=$this->url('default', [
+                                    <a onclick="popUpWindow('<?=$this->url('admin/default', [
                                         'controller'	=> $controller,
                                         'action'		=> 'forgot-password',
                                     ])?>', 150, 310)">Forget password?</a>

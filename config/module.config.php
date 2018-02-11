@@ -2,44 +2,11 @@
 namespace Popov\ZfcUser;
 
 return [
-    'acl' => require_once __DIR__ . '/acl.config.php',
+    'acl' => require __DIR__ . '/acl.config.php',
 
-    'assetic_configuration' => require_once __DIR__ . '/assets.config.php',
+    'assetic_configuration' => require __DIR__ . '/assets.config.php',
 
-    'controllers' => [
-        'invokables' => [
-            'user' => Controller\UserController::class,
-            'staff' => Controller\StaffController::class,
-        ],
-    ],
-    'view_manager' => [
-        'template_map' => [
-            'widget/logout' => __DIR__ . '/../view/widget/logout.phtml',
-            'users/children-index' => __DIR__ . '/../view/popov/user/children/index/index.phtml',
-            'users/children-monitoring' => __DIR__ . '/../view/popov/user/children/monitoring/index.phtml',
-            'users/edit/basic-data' => __DIR__ . '/../view/popov/user/tabs/edit/basic-data.phtml',
-        ],
-        'template_path_stack' => [
-            __DIR__ . '/../view',
-        ],
-    ],
-    'controller_plugins' => [
-        /*'invokables' => [
-            'user' => 'Popov\Users\Controller\Plugin\User',
-        ],*/
-        'factories' => [
-            'user' => Controller\Plugin\Factory\UserPluginFactory::class,
-        ],
-    ],
-    'view_helpers' => [
-        'invokables' => [
-            'user' => View\Helper\UserHelper::class,
-        ],
-    ],
-    'service_manager' => [
-        'initializers' => [
-            //'UserAwareInterface' => Service\Factory\UserInitializer::class,
-        ],
+    'dependencies' => [
         'aliases' => [
             'Acl' => Acl\Acl::class,
             'User' => Model\User::class,
@@ -59,6 +26,47 @@ return [
             Controller\Plugin\UserAuthentication::class => Controller\Plugin\Factory\UserAuthenticationFactory::class,
         ],
     ],
+
+    'controllers' => [
+        'invokables' => [
+            'user' => Controller\UserController::class,
+            'staff' => Controller\StaffController::class,
+        ],
+    ],
+
+    'controller_plugins' => [
+        'factories' => [
+            'user' => Controller\Plugin\Factory\UserPluginFactory::class,
+        ],
+    ],
+
+    'view_helpers' => [
+        'invokables' => [
+            'user' => View\Helper\UserHelper::class,
+        ],
+    ],
+
+    // mvc
+    'view_manager' => [
+        'template_map' => [
+            'widget/logout' => __DIR__ . '/../view/widget/logout.phtml',
+            'users/children-index' => __DIR__ . '/../view/popov/user/children/index/index.phtml',
+            'users/children-monitoring' => __DIR__ . '/../view/popov/user/children/monitoring/index.phtml',
+            'users/edit/basic-data' => __DIR__ . '/../view/popov/user/tabs/edit/basic-data.phtml',
+        ],
+        'template_path_stack' => [
+            __DIR__ . '/../view',
+        ],
+    ],
+
+    // middleware
+    'templates' => [
+        'paths' => [
+            'admin-user'  => [__DIR__ . '/../view/admin/user'],
+            //'layout' => [__DIR__ . '/../view/layout'],
+        ],
+    ],
+
     // Doctrine config
     'doctrine' => [
         'driver' => [

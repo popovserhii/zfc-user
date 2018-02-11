@@ -1,11 +1,11 @@
 <?php
 namespace Popov\ZfcUser\Form;
 
-use Zend\Form\Form,
-	Zend\InputFilter\Factory as InputFactory,
-	Zend\InputFilter\InputFilter;
+use Zend\Form\Form;
+use Zend\InputFilter\Factory as InputFactory;
+use Zend\InputFilter\InputFilter;
 
-class Login extends Form {
+class LoginForm extends Form {
 
 	public function __construct($name = null)
 	{

@@ -12,10 +12,12 @@
  * @author Serhii Popov <popow.sergiy@gmail.com>
  * @license https://opensource.org/licenses/MIT The MIT License (MIT)
  */
-$form->setAttribute('action', $this->url('default/id', [
-    'controller' => $this->current('route')->getParam('controller'),
-    'action' => $this->current('route')->getParam('action'),
-    'id' => $this->current('route')->getParam('id', 0),
+?>
+<?php
+$form->setAttribute('action', $this->url('admin/default', [
+    'controller' => $this->current('resource'),
+    'action' => $this->current('action'),
+    'id' => $form->getObject()->getId(),
 ]));
 
 #$form->setAttribute('class','form-horizontal');
