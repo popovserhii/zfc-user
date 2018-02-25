@@ -1,5 +1,5 @@
 <?php
-namespace Agere\Spare;
+namespace Popov\ZfcUser;
 
 return [
     'modules' => [

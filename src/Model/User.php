@@ -426,4 +426,14 @@ class User {
             $this->roles->removeElement($role);
         }
     }
+
+    public function getName()
+    {
+        return $this->getFirstName() . ' ' . $this->getLastName();
+    }
+
+    public function getFullName()
+    {
+        return trim($this->getName()) . ' ' . $this->getPatronymic();
+    }
 }

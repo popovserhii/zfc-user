@@ -4,7 +4,7 @@
  *
  * @category Agere
  * @package Agere_User
- * @author Popov Sergiy <popov@agere.com.ua>
+ * @author Serhii Popov <popow.serhii@gmail.com>
  * @datetime: 05.10.2016 10:04
  */
 namespace Popov\ZfcUser\Service;

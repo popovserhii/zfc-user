@@ -47,7 +47,9 @@ class UserPlugin extends AbstractPlugin
     public function isAdmin()
     {
         foreach ($this->current()->getRoles() as $role) {
-            return $role->getResource() == 'all';
+            if ($role->getResource() == 'all') {
+                return true;
+            }
         }
 
         return false;

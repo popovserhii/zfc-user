@@ -1,34 +1,50 @@
 <?php
 /**
- * File for UserAuthentication Class
+ * The MIT License (MIT)
+ * Copyright (c) 2018 Serhii Popov
+ * This source file is subject to The MIT License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/MIT
  *
- * @category   User
- * @package    User_Controller
- * @subpackage User_Controller_Plugin
- * @author     Marco Neumann <webcoder_at_binware_dot_org>
- * @copyright  Copyright (c) 2011, Marco Neumann
- * @license    http://binware.org/license/home/type:new-bsd New BSD License
+ * @category Popov
+ * @package Popov_ZfcUser
+ * @author Serhii Popov <popow.serhii@gmail.com>
+ * @license https://opensource.org/licenses/MIT The MIT License (MIT)
  */
-namespace Popov\ZfcUser\Controller\Plugin;
 
-use Zend\Mvc\Controller\Plugin\AbstractPlugin;
+namespace Popov\ZfcUser\Auth;
+
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Adapter\DbTable\CredentialTreatmentAdapter;
 use Zend\Authentication\Adapter\Exception\RuntimeException;
 
-class UserAuthentication extends AbstractPlugin
+class Auth
 {
     const SALT = 'G6t8?Mj$7h#ju';
 
     /**
      * @var CredentialTreatmentAdapter
      */
-    protected $_authAdapter = null;
+    protected $authAdapter = null;
 
     /**
      * @var AuthenticationService
      */
-    protected $_authService = null;
+    protected $authService = null;
+
+    /**
+     * Auth constructor.
+     *
+     * @param CredentialTreatmentAdapter|null $authAdapter
+     * @param AuthenticationService|null $authService
+     * @todo Allow use any adapter such as Doctrine or Zf\Db @see https://samsonasik.wordpress.com/2014/06/21/zend-framework-2-using-custom-authentication-condition-with-doctrinemodule/
+     */
+    public function __construct(CredentialTreatmentAdapter $authAdapter = null, AuthenticationService $authService = null)
+    {
+        $this->authAdapter = $authAdapter;
+        $this->authService = $authService;
+    }
 
     /**
      * Check if Identity is present
@@ -54,11 +70,11 @@ class UserAuthentication extends AbstractPlugin
      * Sets Auth Adapter
      *
      * @param CredentialTreatmentAdapter $authAdapter
-     * @return UserAuthentication
+     * @return Auth
      */
     public function setAuthAdapter(CredentialTreatmentAdapter $authAdapter)
     {
-        $this->_authAdapter = $authAdapter;
+        $this->authAdapter = $authAdapter;
 
         return $this;
     }
@@ -71,23 +87,22 @@ class UserAuthentication extends AbstractPlugin
      */
     public function getAuthAdapter()
     {
-        if ($this->_authAdapter === null) {
-            //$this->setAuthAdapter(new AuthAdapter());
+        if ($this->authAdapter === null) {
             throw new RuntimeException(__CLASS__ . '::_authAdapter should be set via setAuthAdapter() method!');
         }
 
-        return $this->_authAdapter;
+        return $this->authAdapter;
     }
 
     /**
      * Sets Auth Service
      *
      * @param \Zend\Authentication\AuthenticationService $authService
-     * @return UserAuthentication
+     * @return Auth
      */
     public function setAuthService(AuthenticationService $authService)
     {
-        $this->_authService = $authService;
+        $this->authService = $authService;
 
         return $this;
     }
@@ -99,11 +114,11 @@ class UserAuthentication extends AbstractPlugin
      */
     public function getAuthService()
     {
-        if ($this->_authService === null) {
+        if ($this->authService === null) {
             $this->setAuthService(new AuthenticationService());
         }
 
-        return $this->_authService;
+        return $this->authService;
     }
 
     /**
@@ -121,8 +136,10 @@ class UserAuthentication extends AbstractPlugin
         $authAdapter = $this->getAuthAdapter();
 
         $passwordHash = self::getHashPassword($password);
+
         $authAdapter->setIdentity($email);
         $authAdapter->setCredential($passwordHash);
+
         $result = $authService->authenticate($authAdapter);
 
         return $result->isValid();

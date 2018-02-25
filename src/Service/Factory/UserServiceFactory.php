@@ -1,31 +1,32 @@
 <?php
 /**
- * @category Agere
- * @package Agere_User
- * @author Popov Sergiy <popov@agere.com.ua>
+ * @category Popov
+ * @package Popov_ZfcUser
+ * @author Serhii Popov <popow.serhii@gmail.com>
  * @datetime: 10.08.2016 13:32
  */
 namespace Popov\ZfcUser\Service\Factory;
 
-use Zend\Authentication\AuthenticationService;
 use Interop\Container\ContainerInterface;
+use Popov\ZfcUser\Auth\Auth;
 use Popov\ZfcUser\Service\UserService;
-use Popov\ZfcUser\Model\User as User;
+use Popov\ZfcUser\Model\User;
 
 class UserServiceFactory
 {
     public function __invoke(ContainerInterface $container)
     {
-        /** @var AuthenticationService $authService */
-        $authService = $container->get('UserAuthentication')->getAuthService();
         $userService = new UserService();
 
-        if ($authService->hasIdentity()) {
+        /** @var Auth $auth */
+        $auth = $container->get(Auth::class)->getAuthService();
+
+        if ($auth->hasIdentity()) {
             /** @var \Doctrine\ORM\EntityManager $om */
             $om = $container->get('Doctrine\ORM\EntityManager');
-            $user = $authService->getIdentity();
+            /** @var User $user */
+            $user = $auth->getIdentity();
             $user = $om->merge($user);
-            //$user = $om->find(User::class, $dataUser['id']);
             $userService->setCurrent($user);
         }
 

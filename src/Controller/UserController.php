@@ -20,7 +20,7 @@ use Popov\ZfcUser\Form\ChangePassword as ChangePasswordForm;
 use Popov\ZfcUser\Model\User as User;
 use Popov\ZfcRole\Model\Role;
 //use Popov\City\Model\City;
-use Popov\ZfcUser\Controller\Plugin\UserAuthentication;
+use Popov\ZfcUser\Controller\Plugin\AuthService;
 use Popov\ZfcUser\Service\UserService;
 use Popov\ZfcEntity\Controller\Plugin\EntityHelper;
 
@@ -300,7 +300,7 @@ class UserController extends AbstractActionController {
 
 		/** @var ServiceManager $serviceManager */
         $serviceManager = $this->getServiceLocator();
-        /** @var \Popov\ZfcUser\Controller\Plugin\UserAuthentication $uAuth */
+        /** @var \Popov\ZfcUser\Controller\Plugin\AuthService $uAuth */
         $uAuth = $serviceManager->get('UserAuthentication'); //@FIXME improve realisation
         $authService = $uAuth->getAuthService();
         if ($authService->hasIdentity()) {
@@ -324,7 +324,7 @@ class UserController extends AbstractActionController {
                     $om = $serviceManager->get('Doctrine\ORM\EntityManager');
                     $user = $om->getRepository(User::class)->findOneBy([
                         'email' => $email,
-                        'password' => UserAuthentication::getHashPassword($password)
+                        'password' => AuthService::getHashPassword($password)
                     ]);
 
                     $authService->getStorage()->write($user);
@@ -356,7 +356,7 @@ class UserController extends AbstractActionController {
     public function logoutAction()
 	{
 	    $sm = $this->getServiceLocator();
-        /** @var \Popov\ZfcUser\Controller\Plugin\UserAuthentication $uAuth */
+        /** @var \Popov\ZfcUser\Controller\Plugin\AuthService $uAuth */
         $uAuth = $sm->get('UserAuthentication');
         //$authService = $uAuth->getAuthService();
 
@@ -559,7 +559,7 @@ class UserController extends AbstractActionController {
                     $item = $service->save($saveData, $item);
 
                     // Update auth user
-                    /** @var \Popov\ZfcUser\Controller\Plugin\UserAuthentication $uAuth */
+                    /** @var \Popov\ZfcUser\Controller\Plugin\AuthService $uAuth */
                     $uAuth = $locator->get('UserAuthentication');
                     $authStorage = $uAuth->getAuthService()->getStorage();
                     $currentUser = $authStorage->read();

@@ -4,7 +4,7 @@
  *
  * @category Agere
  * @package Agere_User
- * @author Popov Sergiy <popov@agere.com.ua>
+ * @author Serhii Popov <popow.serhii@gmail.com>
  * @datetime: 12.03.2016 1:44
  */
 namespace Popov\ZfcUser\Event\Factory;

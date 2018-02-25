@@ -9,7 +9,7 @@ use	Zend\EventManager\Event;
 use	Zend\Http\Request as HttpRequest;
 use Zend\Console\Request as ConsoleRequest;
 use	Popov\ZfcUser\Acl\Acl;
-use	Popov\ZfcUser\Controller\Plugin\UserAuthentication;
+use	Popov\ZfcUser\Controller\Plugin\AuthService;
 use Popov\ZfcUser\Event\Authentication;
 
 class Module {
@@ -61,15 +61,6 @@ class Module {
 
     public function attachEvents($e) {
 		$mm = $e->getApplication();
-		//$sm = $mm->getServiceManager();
-        //    $vhm = $sm->get('ViewHelperManager');
-        /** @var \Popov\ZfcUser\View\Helper\UserHelper $userHelper */
-        //    $userHelper = $vhm->get('user');
-			//$user = $userHelper->getUser();
-
-
-
-
 
 		$mm->getEventManager()->getSharedManager()
 			->attach(\Popov\ZfcRole\Controller\RoleController::class, ['roles.delete'],

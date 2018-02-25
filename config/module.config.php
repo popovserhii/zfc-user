@@ -1,6 +1,8 @@
 <?php
 namespace Popov\ZfcUser;
 
+//use Zend\Authentication\AuthenticationService;
+
 return [
     'acl' => require __DIR__ . '/acl.config.php',
 
@@ -13,7 +15,7 @@ return [
             'UserService' => Service\UserService::class,
             'UserCityService' => Service\UserCityService::class,
             'UserRoleService' => Service\UserRoleService::class,
-            'UserAuthentication' => Controller\Plugin\UserAuthentication::class,
+            //'UserAuthentication' => Controller\Plugin\AuthService::class, // instead use \Popov\ZfcUser\Auth\Auth
         ],
         'invokables' => [
             Acl\Acl::class => Acl\Acl::class,
@@ -23,7 +25,10 @@ return [
         'factories' => [
             Service\UserService::class => Service\Factory\UserServiceFactory::class,
             Event\Authentication::class => Event\Factory\AuthenticationFactory::class,
-            Controller\Plugin\UserAuthentication::class => Controller\Plugin\Factory\UserAuthenticationFactory::class,
+            //Controller\Plugin\AuthService::class => Controller\Plugin\Factory\AuthFactory::class,
+
+            Auth\Auth::class => Auth\Factory\AuthFactory::class,
+            //AuthenticationService::class => Auth\Factory\AuthServiceFactory::class,
         ],
     ],
 

@@ -2,7 +2,7 @@
 /**
  * @category Agere
  * @package Agere_User
- * @author Popov Sergiy <popov@agere.com.ua>
+ * @author Serhii Popov <popow.serhii@gmail.com>
  * @datetime: 10.08.2016 13:32
  */
 namespace Popov\ZfcUser\Service\Factory;

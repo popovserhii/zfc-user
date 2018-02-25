@@ -24,11 +24,11 @@ use Zend\Permissions\Acl\Resource\GenericResource;
 use Zend\Permissions\Acl\Role\GenericRole;
 
 use Popov\ZfcUser\Model\User;
-use Popov\ZfcUser\Controller\Plugin\UserAuthentication;
+use Popov\ZfcUser\Controller\Plugin\AuthService;
 use Popov\ZfcCore\Service\ConfigAwareTrait;
 use Popov\ZfcUser\Controller\Plugin\UserPlugin;
 //use Popov\Agere\String\StringUtils as AgereString;
-use Popov\ZfcUser\Controller\Plugin\UserAuthentication as AuthPlugin;
+use Popov\ZfcUser\Controller\Plugin\AuthService as AuthPlugin;
 use Popov\ZfcUser\Acl\Acl;
 use Zend\Stdlib\Request;
 
@@ -106,7 +106,7 @@ class Authentication
     /**
      * Gets Authentication Plugin
      *
-     * @return UserAuthentication
+     * @return Authentication
      */
     public function getUserAuthenticationPlugin()
     {
