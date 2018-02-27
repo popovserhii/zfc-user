@@ -53,9 +53,8 @@ trait LoginTrait
                         'password' => Auth::getHashPassword($params['password'])
                     ]);
 
-                    $this->auth->getAuthService()
-                        ->getStorage()
-                        ->write($user);
+                    $storage = $this->auth->getAuthService()->getStorage();
+                    $storage->write($user);
 
                     return true;
                 }
