@@ -35,31 +35,46 @@ trait LoginTrait
     protected $redirect = [
         'route' => 'default',
         'params' => [
-            'resource' => 'index',
+            'resource' => 'question',
             'action' => 'index',
         ],
     ];
 
+    /**
+     * @param ServerRequestInterface $request
+     * @return bool
+     * @throws \Zend\Authentication\Exception\ExceptionInterface
+     */
     public function login(ServerRequestInterface $request)
     {
         if ($request->getMethod() == 'POST') {
             $params = $request->getParsedBody();
             $this->loginForm->setData($params);
             if ($this->loginForm->isValid()) {
-                if ($this->auth->authenticate($params['email'], $params['password'])) {
-                    /** @var User $user */
-                    $user = $this->userService->getRepository()->findOneBy([
-                        'email' => $params['email'],
-                        'password' => Auth::getHashPassword($params['password'])
-                    ]);
-
-                    $storage = $this->auth->getAuthService()->getStorage();
-                    $storage->write($user);
-
-                    return true;
-                }
+                $this->aunthenticate($params['email'], $params['password']);
             }
         }
         return false;
+    }
+
+    /**
+     * @param $email
+     * @param $password
+     * @return bool
+     * @throws \Zend\Authentication\Exception\ExceptionInterface
+     */
+    public function aunthenticate($email, $password)
+    {
+        if ($this->auth->authenticate($email, $password)) {
+            /** @var User $user */
+            $user = $this->userService->getRepository()->findOneBy([
+                'email' => $email,
+                'password' => Auth::getHashPassword($password)
+            ]);
+
+            $storage = $this->auth->getAuthService()->getStorage();
+            $storage->write($user);
+            return true;
+        }
     }
 }
