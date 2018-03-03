@@ -51,7 +51,7 @@ trait LoginTrait
             $params = $request->getParsedBody();
             $this->loginForm->setData($params);
             if ($this->loginForm->isValid()) {
-                $this->aunthenticate($params['email'], $params['password']);
+                return $this->aunthenticate($params['email'], $params['password']);
             }
         }
         return false;
