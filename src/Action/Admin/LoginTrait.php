@@ -51,7 +51,7 @@ trait LoginTrait
             $params = $request->getParsedBody();
             $this->loginForm->setData($params);
             if ($this->loginForm->isValid()) {
-                $this->aunthenticate($params['email'], $params['password']);
+                return $this->aunthenticate($params['email'], $params['password']);
             }
         }
         return false;
@@ -76,5 +76,22 @@ trait LoginTrait
             $storage->write($user);
             return true;
         }
+    }
+
+    /**
+     * @param $email
+     * @return bool
+     * @throws \Zend\Authentication\Exception\ExceptionInterface
+     */
+    public function authenticateSocialByEmail($email)
+    {
+        /** @var User $user */
+        $user = $this->userService->getRepository()->findOneBy([
+            'email' => $email,
+        ]);
+
+        $storage = $this->auth->getAuthService()->getStorage();
+        $storage->write($user);
+        return true;
     }
 }
