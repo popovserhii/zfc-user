@@ -15,7 +15,7 @@
 ?>
 <?php
 $form->setAttribute('action', $this->url('admin/default', [
-    'controller' => $this->current('resource'),
+    'resource' => $this->current('resource'),
     'action' => $this->current('action'),
     'id' => $form->getObject()->getId(),
 ]));
