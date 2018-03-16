@@ -84,6 +84,12 @@ class User {
 
     /**
      * @var \DateTime
+     * @ORM\Column(name="createdAt", type="datetime", nullable=true)
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime
      * @ORM\Column(name="employedAt", type="datetime", nullable=true)
      */
 	private $employedAt;
@@ -330,6 +336,22 @@ class User {
         $this->birthedAt = $birthedAt;
 
         return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param \DateTime $createdAt
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
     }
 
     /**
