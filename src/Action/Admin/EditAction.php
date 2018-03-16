@@ -25,10 +25,10 @@ class EditAction implements MiddlewareInterface, RequestMethodInterface
     /** @var FormElementManager */
     protected $formManager;
 
-    /** @var UrlHelper */
+    /** @var RequestHelper */
     protected $urlHelper;
 
-    public function __construct(UserService $userService, FormElementManager $formManager, UrlHelper $urlHelper)
+    public function __construct(UserService $userService, FormElementManager $formManager, RequestHelper $urlHelper)
     {
         $this->userService = $userService;
         $this->formManager = $formManager;
