@@ -36,7 +36,10 @@ trait LoginTrait
         'route' => 'default',
         'params' => [
             'resource' => 'question',
-            'action' => 'index',
+            'action' => 'info',
+            /*@todo-vlad Прибрати коли розберемось*/
+            'id' => null,
+            'more' => null
         ],
     ];
 
