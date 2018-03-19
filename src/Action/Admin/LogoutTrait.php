@@ -24,7 +24,7 @@ trait LogoutTrait
     /** @var Auth */
     protected $auth;
 
-    /** @var UrlHelper */
+    /** @var RequestHelper */
     protected $urlHelper;
 
     protected $redirect = [

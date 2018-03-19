@@ -7,7 +7,7 @@ use Zend\View\Helper\AbstractHelper;
 use Zend\Authentication\AuthenticationService;
 use Zend\Session\Container as SessionContainer;
 use Popov\ZfcUser\Controller\Plugin\UserPlugin as UserPlugin;
-use Agere\Simpler\Plugin\SimplerPlugin;
+use Popov\Simpler\Plugin\SimplerPlugin;
 
 class UserHelper extends AbstractHelper
 {

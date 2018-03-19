@@ -30,14 +30,14 @@ class LoginAction implements MiddlewareInterface, RequestMethodInterface
     /** @var Auth */
     protected $auth;
 
-    /** @var UrlHelper */
+    /** @var RequestHelper */
     protected $urlHelper;
 
     public function __construct(
         UserService $userService,
         LoginForm $loginForm,
         Auth $auth,
-        UrlHelper $urlHelper
+        RequestHelper $urlHelper
     )
     {
         $this->userService = $userService;

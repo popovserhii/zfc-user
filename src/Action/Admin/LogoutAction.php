@@ -17,12 +17,12 @@ class LogoutAction implements MiddlewareInterface, RequestMethodInterface
     /** @var Auth */
     protected $auth;
 
-    /** @var UrlHelper */
+    /** @var RequestHelper */
     protected $urlHelper;
 
     public function __construct(
         Auth $auth,
-        UrlHelper $urlHelper
+        RequestHelper $urlHelper
     ) {
         $this->auth = $auth;
         $this->urlHelper = $urlHelper;
