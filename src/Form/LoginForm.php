@@ -5,24 +5,38 @@ namespace Popov\ZfcUser\Form;
 use Zend\Form\Form;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilter;
+use Zend\I18n\Translator\TranslatorAwareInterface;
+use Stagem\ZfcTranslator\TranslatorAwareTrait;
 
-class LoginForm extends Form
+class LoginForm extends Form implements TranslatorAwareInterface
 {
-    public function __construct($name = null)
+    use TranslatorAwareTrait;
+
+    public function init()
     {
-        parent::__construct($name ?: 'login');
+        $this->setName('login');
         $this->setAttribute('method', 'post');
+
         $this->add([
             'name' => 'email',
             'attributes' => [
                 'required' => 'required',
+                'class' => 'form-control',
+            ],
+            'options' => [
+                'label' => $this->translate('Email'),
             ],
         ]);
+
         $this->add([
             'type' => 'password',
             'name' => 'password',
             'attributes' => [
                 'required' => 'required',
+                'class' => 'form-control',
+            ],
+            'options' => [
+                'label' => $this->translate('Password'),
             ],
         ]);
 
@@ -30,7 +44,7 @@ class LoginForm extends Form
             'name' => 'save',
             'options' => [
                 'ignore' => true,
-                'label' => 'Login',
+                'label' => $this->translate('Login'),
             ],
         ]);
 
