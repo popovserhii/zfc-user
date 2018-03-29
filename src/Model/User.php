@@ -451,11 +451,11 @@ class User {
 
     public function getName()
     {
-        return $this->getFirstName() . ' ' . $this->getLastName();
+        return trim($this->getFirstName() . ' ' . $this->getLastName());
     }
 
     public function getFullName()
     {
-        return trim($this->getName()) . ' ' . $this->getPatronymic();
+        return trim($this->getName() . ' ' . $this->getPatronymic());
     }
 }
