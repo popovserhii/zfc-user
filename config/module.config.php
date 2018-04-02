@@ -4,7 +4,6 @@ namespace Popov\ZfcUser;
 //use Zend\Authentication\AuthenticationService;
 
 return [
-    'acl' => require __DIR__ . '/acl.config.php',
 
     'assetic_configuration' => require __DIR__ . '/assets.config.php',
 
@@ -24,7 +23,7 @@ return [
         ],
         'factories' => [
             Service\UserService::class => Service\Factory\UserServiceFactory::class,
-            Event\Authentication::class => Event\Factory\AuthenticationFactory::class,
+            Event\Authentication::class => Event\Factory\PermissionHelperFactory::class,
             //Controller\Plugin\AuthService::class => Controller\Plugin\Factory\AuthFactory::class,
 
             Auth\Auth::class => Auth\Factory\AuthFactory::class,

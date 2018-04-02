@@ -105,7 +105,10 @@ class Acl extends ZendAcl
         foreach ($roles as $role) {
             $mnemo = is_object($role) ? $role->getMnemo() : $role;
 
+            $allowed = [];
+            if ($this->hasResource('all')) {
                 $allowed = ['all' => $this->isAllowed($mnemo, 'all', Acl::getAccessTotal())];
+            }
 
             if ($this->hasResource($resource)) {
                 $allowed['total'] = $this->isAllowed($mnemo, $resource, Acl::getAccessTotal());

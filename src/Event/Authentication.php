@@ -32,6 +32,12 @@ use Popov\ZfcUser\Controller\Plugin\AuthService as AuthPlugin;
 use Popov\ZfcUser\Acl\Acl;
 use Zend\Stdlib\Request;
 
+/**
+ * Class Authentication
+ *
+ * @package Popov\ZfcUser\Event
+ * @deprecated
+ */
 class Authentication
 {
     use ConfigAwareTrait;
