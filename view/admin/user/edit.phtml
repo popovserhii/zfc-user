@@ -14,10 +14,11 @@
  */
 ?>
 <?php
+$form = $this->vars('form');
 $form->setAttribute('action', $this->url('admin/default', [
     'resource' => $this->current('resource'),
     'action' => $this->current('action'),
-    'id' => $form->getObject()->getId(),
+    'id' => (int) $form->getObject()->getId(),
 ]));
 
 #$form->setAttribute('class','form-horizontal');
@@ -25,6 +26,9 @@ $form->prepare();
 ?>
 
 
+<?= $this->partial('form::form', ['form' => $form]) ?>
+
+<?php /*
 <div class="row">
 	<div class="col-md-12">
 		<!-- general form elements -->
@@ -34,11 +38,9 @@ $form->prepare();
                 <?= $this->form()->openTag($form) ?>
                 <?= $this->formCollection($form) ?>
 
-				<!--<div class="box-footer">
-                    <?/*= $this->formElement($form->get('submit'))*/?>
-				</div>-->
                 <?= $this->form()->closeTag() ?>
 			</div>
 		</div>
 	</div>
 </div>
+ */ ?>

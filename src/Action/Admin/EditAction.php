@@ -28,7 +28,7 @@ class EditAction implements MiddlewareInterface, RequestMethodInterface
     /** @var RequestHelper */
     protected $urlHelper;
 
-    public function __construct(UserService $userService, FormElementManager $formManager, RequestHelper $urlHelper)
+    public function __construct(UserService $userService, FormElementManager $formManager, UrlHelper $urlHelper)
     {
         $this->userService = $userService;
         $this->formManager = $formManager;
@@ -37,11 +37,11 @@ class EditAction implements MiddlewareInterface, RequestMethodInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $flashMessages = $request->getAttribute(FlashMessageMiddleware::FLASH_ATTRIBUTE);
+        #$flashMessages = $request->getAttribute(FlashMessageMiddleware::FLASH_ATTRIBUTE);
         $route = $request->getAttribute(RouteResult::class);
 
         /** @var User $user */
-        $user = ($user = $this->userService->find($id = (int) $route->getMatchedParams()['id']))
+        $user = ($user = $this->userService->find($id = (int) ($route->getMatchedParams()['id'] ?? 0)))
             ? $user
             : $this->userService->getObjectModel();
 
@@ -67,15 +67,16 @@ class EditAction implements MiddlewareInterface, RequestMethodInterface
 
                 #$this->getEventManager()->trigger($route->getParam('action') . '.post', $user, ['password' => $password]);
 
-                $msg = 'User has been successfully saved';
-                $flashMessages->flash('success', $msg);
+                #$msg = 'User has been successfully saved';
+                #$flashMessages->flash('success', $msg);
 
                 return new RedirectResponse($this->urlHelper->generate('admin/default', [
-                    'controller' => 'index', //@TODO implement UserGrid
+                    'resource' => 'user',
+                    'action' => 'index',
                 ]));
             } else {
-                $msg = 'Form is invalid. Please, check the correctness of the entered data';
-                $flashMessages->flash('error', $msg);
+                #$msg = 'Form is invalid. Please, check the correctness of the entered data';
+                #$flashMessages->flash('error', $msg);
             }
         }
 

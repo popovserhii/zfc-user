@@ -11,7 +11,13 @@ namespace Popov\ZfcUser\Service;
 
 use Popov\ZfcCore\Service\DomainServiceAbstract;
 use Popov\ZfcUser\Model\User as User;
+use Popov\ZfcUser\Model\Repository\UserRepository;
 
+/**
+ * Class UserService
+ *
+ * @method getRepository() UserRepository
+ */
 class UserService extends DomainServiceAbstract
 {
     const SALT = 'G6t8?Mj$7h#ju';
@@ -63,5 +69,12 @@ class UserService extends DomainServiceAbstract
         }
 
         return $password;
+    }
+
+    public function getUsers()
+    {
+        $gb = $this->getRepository()->getUsers();
+
+        return $gb;
     }
 }

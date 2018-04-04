@@ -101,15 +101,20 @@ class User {
 	private $photo;
 
     /**
+     * Can user access to inner system
+     *
+     * By default set to "false" that meat you should obviously set "true" for users witch should have access to inner system
+     *
+     * @var bool
+     * @ORM\Column(name="isInner", type="integer", length=1, nullable=false)
+     */
+	private $isInner = 0;
+
+    /**
      * @var string
      * @ORM\Column(name="notation", type="string", nullable=true)
      */
 	private $notation;
-
-	/**
-	 * @var \Doctrine\Common\Collections\Collection
-	 */
-	//private $cities;
 
     /**
      * Many Users have Many Roles.
@@ -117,7 +122,10 @@ class User {
      * @var ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Popov\ZfcRole\Model\Role", inversedBy="users", cascade={"persist"})
-     * @ORM\JoinTable(name="users_roles")
+     * @ORM\JoinTable(name="users_roles",
+     *    joinColumns={@ORM\JoinColumn(name="userId", referencedColumnName="id")},
+     *    inverseJoinColumns={@ORM\JoinColumn(name="roleId", referencedColumnName="id")}
+     * )
      */
 	private $roles;
 
@@ -388,6 +396,25 @@ class User {
     public function setPhoto($photo)
     {
         $this->photo = $photo;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsInner()
+    {
+        return $this->isInner;
+    }
+
+    /**
+     * @param bool $isInner
+     * @return User
+     */
+    public function setIsInner($isInner)
+    {
+        $this->isInner = $isInner;
 
         return $this;
     }

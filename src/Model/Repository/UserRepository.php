@@ -8,7 +8,23 @@ use Doctrine\ORM\EntityRepository;
 class UserRepository extends EntityRepository {
 
 	protected $_table = 'user';
-	protected $_alias = 'u';
+	protected $_alias = 'user';
+
+    /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getUsers()
+    {
+        $roleAlias = 'role';
+
+        $qb = $this->createQueryBuilder($this->_alias);
+        $qb->select($this->_alias)
+            ->addSelect($roleAlias)
+            ->leftJoin($this->_alias . '.roles', $roleAlias)
+        ;
+
+        return $qb;
+    }
 
 	public function findByRoles($roles) {
 		$roleAlias = 'role';

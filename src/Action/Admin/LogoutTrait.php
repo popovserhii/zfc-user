@@ -24,7 +24,7 @@ trait LogoutTrait
     /** @var Auth */
     protected $auth;
 
-    /** @var RequestHelper */
+    /** @var UrlHelper */
     protected $urlHelper;
 
     protected $redirect = [
@@ -42,6 +42,7 @@ trait LogoutTrait
             $this->auth->unAuthenticate();
         }
 
-        return new RedirectResponse($this->urlHelper->generate($this->redirect['route'], $this->redirect['params']));
+        $url = $this->urlHelper->generate($this->redirect['route'], $this->redirect['params']);
+        return new RedirectResponse($url);
     }
 }

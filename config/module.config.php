@@ -25,6 +25,7 @@ return [
             Service\UserService::class => Service\Factory\UserServiceFactory::class,
             Event\Authentication::class => Event\Factory\PermissionHelperFactory::class,
             //Controller\Plugin\AuthService::class => Controller\Plugin\Factory\AuthFactory::class,
+            Helper\UserHelper::class => Helper\UserHelperFactory::class,
 
             Auth\Auth::class => Auth\Factory\AuthFactory::class,
             //AuthenticationService::class => Auth\Factory\AuthServiceFactory::class,
@@ -40,14 +41,17 @@ return [
 
     'controller_plugins' => [
         'factories' => [
-            'user' => Controller\Plugin\Factory\UserPluginFactory::class,
+            'user' => Controller\Plugin\Factory\UserHelperFactory::class,
         ],
     ],
 
     'view_helpers' => [
-        'invokables' => [
+        'aliases' => [
             'user' => View\Helper\UserHelper::class,
         ],
+        'factories' => [
+            View\Helper\UserHelper::class => View\Helper\Factory\SimplerHelperFactory::class,
+        ]
     ],
 
     // mvc
@@ -65,9 +69,12 @@ return [
 
     // middleware
     'templates' => [
+        'map' => [
+            'layout::admin-login'  => __DIR__ . '/../view/admin/layout/login.phtml',
+        ],
         'paths' => [
             'admin-user'  => [__DIR__ . '/../view/admin/user'],
-            //'layout' => [__DIR__ . '/../view/layout'],
+            'widget' => [__DIR__ . '/../view/admin/widget'],
         ],
     ],
 

@@ -16,6 +16,7 @@ class UserForm extends Form
             'name' => 'user',
             'type' => UserFieldset::class,
             'options' => [
+                'label' => 'User',
                 'use_as_base_fieldset' => true,
             ],
         ]);

@@ -123,7 +123,7 @@ class UserFieldset extends Fieldset
                 'format' => 'd/m/Y',
             ],
             'attributes' => [
-                'placeholder' => 'Date format: 21/06/1990',
+                //'placeholder' => 'Date format: 21/06/1990',
             ],
         ]);
 

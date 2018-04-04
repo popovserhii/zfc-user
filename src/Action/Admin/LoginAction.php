@@ -16,6 +16,7 @@ use Popov\ZfcUser\Auth\Auth;
 use Popov\ZfcUser\Form\LoginForm;
 use Popov\ZfcUser\Service\UserService;
 use Popov\ZfcUser\Model\User;
+use Popov\ZfcForm\FormElementManager;
 
 class LoginAction implements MiddlewareInterface, RequestMethodInterface
 {
@@ -30,22 +31,26 @@ class LoginAction implements MiddlewareInterface, RequestMethodInterface
     /** @var Auth */
     protected $auth;
 
-    /** @var RequestHelper */
+    /** @var UrlHelper */
     protected $urlHelper;
 
     public function __construct(
         UserService $userService,
-        LoginForm $loginForm,
+        //LoginForm $loginForm,
+        FormElementManager $fm,
         Auth $auth,
-        RequestHelper $urlHelper
+        UrlHelper $urlHelper
     )
     {
         $this->userService = $userService;
-        $this->loginForm = $loginForm;
+        $this->loginForm = $fm->get(LoginForm::class);;
         $this->auth = $auth;
         $this->urlHelper = $urlHelper;
         $this->redirect['route'] = 'admin/default';
-
+        $this->redirect['params'] = [
+            'resource' => 'admin',
+            'action' => 'dashboard',
+        ];
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -63,11 +68,13 @@ class LoginAction implements MiddlewareInterface, RequestMethodInterface
                 $sessionAuth = new SessionContainer('Zend_Auth');
                 $sessionAuth->setExpirationSeconds(3600); // 60 minutes
             }
+            $url = $this->urlHelper->generate($this->redirect['route'], $this->redirect['params']);
 
-            return new RedirectResponse($this->urlHelper->generate($this->redirect['route'], $this->redirect['params']));
+            return new RedirectResponse($url);
         }
 
         $view = new ViewModel([
+            'layout' => 'layout::admin-login',
             'form' => $this->loginForm,
         ]);
 

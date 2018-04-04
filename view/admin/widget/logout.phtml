@@ -1,6 +1,6 @@
 <?php
-/** @var \Magere\ZfcUser\View\Helper\User $userHelper */
-/** @var \Zend\View\Renderer\PhpRenderer $this */
+/** @var Popov\ZfcUser\View\Helper\UserHelper $userHelper */
+/** @var Zend\View\Renderer\PhpRenderer $this */
 if (!$this->getHelperPluginManager()->has('user')) {
     return;
 }
@@ -27,10 +27,10 @@ $user = $userHelper->current();
         <h6><?= $this->simpler($user->getRoles())->asString('name') ?></h6>
         <span><?= $user->getEmail() ?></span>
     </div>
-    <a class="logout-btn" onclick="if(confirm('Do you want logout?')) document.location.href='<?= $this->url('default', [
-        'controller'	=> 'user',
-        'action'		=> 'logout'
-    ]) ?>'">
+	<a class="logout-btn" onclick="if(confirm('Do you want logout?')) document.location.href='<?= $this->url('admin/default', [
+       'resource' => 'user',
+       'action' => 'logout',
+	]) ?>'">
         <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
     </a>
 </div>

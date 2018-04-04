@@ -17,16 +17,20 @@ class LogoutAction implements MiddlewareInterface, RequestMethodInterface
     /** @var Auth */
     protected $auth;
 
-    /** @var RequestHelper */
+    /** @var UrlHelper*/
     protected $urlHelper;
 
     public function __construct(
         Auth $auth,
-        RequestHelper $urlHelper
+        UrlHelper $urlHelper
     ) {
         $this->auth = $auth;
         $this->urlHelper = $urlHelper;
         $this->redirect['route'] = 'admin/default';
+        $this->redirect['params'] = [
+            'resource' => 'user',
+            'action' => 'login',
+        ];
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

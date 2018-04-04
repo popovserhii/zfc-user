@@ -35,11 +35,11 @@ trait LoginTrait
     protected $redirect = [
         'route' => 'default',
         'params' => [
-            'resource' => 'question',
-            'action' => 'info',
+            'resource' => 'index',
+            'action' => 'index',
             /*@todo-vlad Прибрати коли розберемось*/
-            'id' => null,
-            'more' => null
+            #'id' => null,
+            #'more' => null
         ],
     ];
 
