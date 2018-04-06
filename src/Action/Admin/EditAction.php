@@ -12,6 +12,7 @@ use Zend\Expressive\Router\RouteResult;
 use Zend\Expressive\Helper\UrlHelper;
 use Zend\View\Model\ViewModel;
 use Zend\Expressive\Flash\FlashMessageMiddleware;
+use Zend\EventManager\EventManagerAwareInterface;
 use Popov\ZfcForm\FormElementManager;
 use Popov\ZfcUser\Form\UserForm;
 use Popov\ZfcUser\Service\UserService;
@@ -25,7 +26,7 @@ class EditAction implements MiddlewareInterface, RequestMethodInterface
     /** @var FormElementManager */
     protected $formManager;
 
-    /** @var RequestHelper */
+    /** @var UrlHelper */
     protected $urlHelper;
 
     public function __construct(UserService $userService, FormElementManager $formManager, UrlHelper $urlHelper)
@@ -37,7 +38,7 @@ class EditAction implements MiddlewareInterface, RequestMethodInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        #$flashMessages = $request->getAttribute(FlashMessageMiddleware::FLASH_ATTRIBUTE);
+        $flash = $request->getAttribute('flash');
         $route = $request->getAttribute(RouteResult::class);
 
         /** @var User $user */
@@ -48,7 +49,6 @@ class EditAction implements MiddlewareInterface, RequestMethodInterface
         /** @var UserForm $form */
         $form = $this->formManager->get(UserForm::class);
         $form->bind($user);
-
         if ($request->getMethod() == self::METHOD_POST) {
             $params = $request->getParsedBody();
             $form->setData($params);
@@ -67,16 +67,14 @@ class EditAction implements MiddlewareInterface, RequestMethodInterface
 
                 #$this->getEventManager()->trigger($route->getParam('action') . '.post', $user, ['password' => $password]);
 
-                #$msg = 'User has been successfully saved';
-                #$flashMessages->flash('success', $msg);
+                $flash->addMessage('User has been successfully saved', 'success');
 
                 return new RedirectResponse($this->urlHelper->generate('admin/default', [
                     'resource' => 'user',
                     'action' => 'index',
                 ]));
             } else {
-                #$msg = 'Form is invalid. Please, check the correctness of the entered data';
-                #$flashMessages->flash('error', $msg);
+                $flash->addMessage('Form is invalid. Please, check the correctness of the entered data', 'error');
             }
         }
 

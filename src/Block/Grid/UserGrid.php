@@ -54,13 +54,16 @@ class UserGrid extends AbstractGrid
             'width' => 3,
         ]);
 
-        $this->add([
-            'name' => 'Select',
-            'construct' => ['isInner', 'user'],
-            'label' => 'Inner User',
-            'identity' => false,
-            'width' => 3,
-        ]);
+        #$this->add([
+        #    'name' => 'Select',
+        #    'construct' => ['isInner', 'user'],
+        #    'label' => 'Inner User',
+        #    'identity' => false,
+        #    'width' => 3,
+        #    'filter_select_options' => [
+        #        0 => ''
+        #    ],
+        #]);
 
         $this->add([
             'name' => 'Select',
