@@ -153,6 +153,18 @@ class UserFieldset extends Fieldset
         ]);
 
         $this->add([
+            'type' => 'select',
+            'name' => 'isInner',
+            'options' => [
+                'label' => 'Is Inner',
+                'value_options' => [
+                    '0' => 'No',
+                    '1' => 'Yes',
+                ],
+            ],
+        ]);
+
+        $this->add([
             'type' => 'DoctrineModule\Form\Element\ObjectSelect',
             'name' => 'roles',
             'options' => [

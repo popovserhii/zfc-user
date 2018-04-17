@@ -15,6 +15,7 @@
 
 namespace Popov\ZfcUser\Action\Admin;
 
+use Popov\ZfcUser\Block\Grid\UserGrid;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -22,7 +23,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Fig\Http\Message\RequestMethodInterface;
 use Zend\View\Model\ViewModel;
 use Popov\ZfcCurrent\CurrentHelper;
-use Popov\ZfcUser\Block\Grid\UserGrid;
+use Popov\ZfcUser\Block\Grid\RoleGrid;
 use Popov\ZfcUser\Service\UserService;
 
 class IndexAction implements MiddlewareInterface, RequestMethodInterface
