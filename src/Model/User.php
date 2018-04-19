@@ -458,9 +458,9 @@ class User {
     }
 
     /**
-     * @param Collection $roles
+     * @param array|Collection $roles
      */
-    public function addRoles(Collection $roles)
+    public function addRoles($roles)
     {
         foreach ($roles as $role) {
             $role->getUsers()->add($this);
@@ -468,7 +468,7 @@ class User {
         }
     }
 
-    public function removeRoles(Collection $roles)
+    public function removeRoles($roles)
     {
         foreach ($roles as $role) {
             $role->getUsers()->clear();
