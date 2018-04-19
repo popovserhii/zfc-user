@@ -48,9 +48,9 @@ class UserGrid extends AbstractGrid
             'identity' => true,
         ])->getDataGrid()->getColumnByUniqueId('user_id');
 
-        $massAction = new Mass();
-        $massAction->setTitle('Remove');
-        $grid->addMassAction($massAction);
+        #$massAction = new Mass();
+        #$massAction->setTitle('Remove');
+        #$grid->addMassAction($massAction);
 
         $this->add([
             'name' => 'Select',
