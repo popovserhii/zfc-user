@@ -16,6 +16,7 @@
 namespace Popov\ZfcUser\Block\Grid;
 
 use Popov\ZfcDataGrid\Block\AbstractGrid;
+use ZfcDatagrid\Action\Mass;
 
 class UserGrid extends AbstractGrid
 {
@@ -46,6 +47,10 @@ class UserGrid extends AbstractGrid
             'construct' => ['id', 'user'],
             'identity' => true,
         ])->getDataGrid()->getColumnByUniqueId('user_id');
+
+        $massAction = new Mass();
+        $massAction->setTitle('Remove');
+        $grid->addMassAction($massAction);
 
         $this->add([
             'name' => 'Select',
