@@ -41,10 +41,10 @@ class Module {
             && (false === strpos($e->getRequest()->getUri()->getPath(), 'soap')) // @todo Придумати як видалити цю перевірку
         ) {
 
-            $vhm = $sm->get('ViewHelperManager');
+            /*$vhm = $sm->get('ViewHelperManager');
 
-            $this->attachEvents($e);
-            /** @var Authentication $auth */
+            #$this->attachEvents($e);
+
             $this->auth = $auth = $sm->get(Authentication::class);
             $this->userHelper = $vhm->get('user');
 
@@ -53,7 +53,7 @@ class Module {
             $sharedEvents->attach(\Zend\Mvc\Controller\AbstractActionController::class, 'dispatch', [
                 $auth,
                 'mvcPreDispatch',
-            ], 1000); //@todo - Go directly to User\Event\Authentication
+            ], 1000);*/
         } elseif ($e->getRequest() instanceof ConsoleRequest) {
             #$auth->initCron();
         }
