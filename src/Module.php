@@ -54,8 +54,6 @@ class Module {
                 $auth,
                 'mvcPreDispatch',
             ], 1000);*/
-        } elseif ($e->getRequest() instanceof ConsoleRequest) {
-            #$auth->initCron();
         }
     }
 
