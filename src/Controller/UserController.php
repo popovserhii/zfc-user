@@ -3,7 +3,8 @@ namespace Popov\ZfcUser\Controller;
 
 use Popov\ZfcPermission\Model\Permission;
 use Popov\ZfcPermission\Model\PermissionAccess;
-use Popov\ZfcUser\Acl\Acl;
+use Popov\ZfcPermission\Acl\Acl;
+use Popov\ZfcUser\Auth\Auth;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\ServiceManager\ServiceManager;
 use Zend\View\Model\ViewModel;
@@ -23,6 +24,7 @@ use Popov\ZfcRole\Model\Role;
 use Popov\ZfcUser\Controller\Plugin\AuthService;
 use Popov\ZfcUser\Service\UserService;
 use Popov\ZfcEntity\Controller\Plugin\EntityHelper;
+use Popov\ZfcForm\FormElementManager;
 
 /**
  * @method EntityHelper entity($context = null)
@@ -37,14 +39,24 @@ class UserController extends AbstractActionController {
     public $sessionNameFilters = 'userFilters';
     public $limit = 36;
 
+    /** @var UserService */
+    protected $userService;
+
+    /** @var FormElementManager */
     protected $formElementManager;
+
+    /** @var Auth */
+    protected $auth;
+
+    public function __construct(UserService $userService, FormElementManager $fm, Auth $auth)
+    {
+        $this->userService = $userService;
+        $this->formElementManager = $fm;
+        $this->auth = $auth;
+    }
 
     public function getFormElementManager()
     {
-        if (!$this->formElementManager) {
-            $this->formElementManager = $this->serviceLocator->get('FormElementManager');
-
-        }
         return $this->formElementManager;
     }
 
@@ -252,7 +264,6 @@ class UserController extends AbstractActionController {
         ]));
     }
 
-
     public function historyAction()
     {
         /** @var \Zend\Mvc\Router\RouteMatch $route */
@@ -295,19 +306,12 @@ class UserController extends AbstractActionController {
 
     public function loginAction()
 	{
-        // Session user email
-        //$sessionUserEmail = new SessionContainer('userEmail');
-
-		/** @var ServiceManager $serviceManager */
-        $serviceManager = $this->getServiceLocator();
-        /** @var \Popov\ZfcUser\Controller\Plugin\AuthService $uAuth */
-        $uAuth = $serviceManager->get('UserAuthentication'); //@FIXME improve realisation
-        $authService = $uAuth->getAuthService();
-        if ($authService->hasIdentity()) {
-            return $this->redirect()->toRoute('default', ['controller' => 'index', 'action' => 'index']);
+        $authService = $this->auth->getAuthService();
+        if ($this->auth->hasIdentity()) {
+            return $this->redirect()->toRoute('admin/default', ['controller' => 'index', 'action' => 'index']);
         }
 
-        $form = new LoginForm();
+        $form = $this->formElementManager->get(LoginForm::class);
         //$login = ($sessionUserEmail->offsetExists('userEmail')) ? $sessionUserEmail->userEmail : '';
         //$form->get('email')->setValue($login);
 
@@ -320,14 +324,13 @@ class UserController extends AbstractActionController {
                 $email = $request->getPost('email');
                 $password = $request->getPost('password');
                 //if (($auth = $uAuth->authenticate($email, $password)) && $auth->isValid()) {
-                if ($uAuth->authenticate($email, $password)) {
-                    $om = $serviceManager->get('Doctrine\ORM\EntityManager');
-                    $user = $om->getRepository(User::class)->findOneBy([
+                if ($this->auth->authenticate($email, $password)) {
+                    $user = $this->userService->getRepository()->findOneBy([
                         'email' => $email,
-                        'password' => AuthService::getHashPassword($password)
+                        'password' => Auth::getHashPassword($password)
                     ]);
 
-                    $authService->getStorage()->write($user);
+                    $this->auth->getStorage()->write($user);
 
                     //$resource = unserialize($currentUser['resource']);
                     if ('all' === $user->getRoles()->first()->getResource()) {
@@ -340,16 +343,19 @@ class UserController extends AbstractActionController {
                         //$sessionUserEmail->userEmail = $email;
                     }
 
-                    $this->redirect()->toRoute('default', ['controller' => 'index', 'action' => 'index']);
+                    $this->redirect()->toRoute('admin/default', ['controller' => 'index', 'action' => 'index']);
                 }
             }
         }
 
-        $view = new ViewModel([
+        $view = (new ViewModel([
             'form' => $form,
-        ]);
+        ]))->setTemplate('admin-user::login');
         // Disable layouts; use this view model in the MVC event instead
-        $view->setTerminal(true);
+        //$view->setTerminal(true);
+
+        $this->layout('layout::login');
+
         return $view;
     }
 

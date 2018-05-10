@@ -10,7 +10,7 @@
 namespace Popov\ZfcUser\Helper;
 
 use Zend\Stdlib\Exception;
-use Popov\ZfcUser\Acl\Acl;
+use Popov\ZfcPermission\Acl\Acl;
 use Popov\ZfcUser\Model\User;
 use Popov\ZfcUser\Service\UserService;
 use Popov\Simpler\SimplerHelper;

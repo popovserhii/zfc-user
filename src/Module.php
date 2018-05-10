@@ -8,7 +8,7 @@ use	Zend\ModuleManager\ModuleManager;
 use	Zend\EventManager\Event;
 use	Zend\Http\Request as HttpRequest;
 use Zend\Console\Request as ConsoleRequest;
-use	Popov\ZfcUser\Acl\Acl;
+use	Popov\ZfcPermission\Acl\Acl;
 use	Popov\ZfcUser\Controller\Plugin\AuthService;
 use Popov\ZfcUser\Event\Authentication;
 
@@ -93,7 +93,7 @@ class Module {
 		/** @var \Popov\ZfcUser\Event\Authentication $auth */
 		//$auth = $sm->get('Popov\Users\Event\Authentication');
 
-        /** @var \Popov\ZfcUser\Acl\Acl $acl */
+        /** @var \Popov\ZfcPermission\Acl\Acl $acl */
 		$acl = $this->auth->getAcl();
 
 		//\Zend\Debug\Debug::dump(get_class($acl)); die(__METHOD__);

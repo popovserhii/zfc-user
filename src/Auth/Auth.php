@@ -67,6 +67,14 @@ class Auth
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getStorage()
+    {
+        return $this->getAuthService()->getStorage();
+    }
+
+    /**
      * Sets Auth Adapter
      *
      * @param CredentialTreatmentAdapter $authAdapter

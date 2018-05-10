@@ -3,13 +3,14 @@ namespace Popov\ZfcUser;
 
 //use Zend\Authentication\AuthenticationService;
 
+use Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
+
 return [
 
     'assetic_configuration' => require __DIR__ . '/assets.config.php',
 
     'dependencies' => [
         'aliases' => [
-            'Acl' => Acl\Acl::class,
             'User' => Model\User::class,
             'UserService' => Service\UserService::class,
             'UserCityService' => Service\UserCityService::class,
@@ -17,7 +18,6 @@ return [
             //'UserAuthentication' => Controller\Plugin\AuthService::class, // instead use \Popov\ZfcUser\Auth\Auth
         ],
         'invokables' => [
-            Acl\Acl::class => Acl\Acl::class,
             Service\UserCityService::class => Service\UserCityService::class,
             Service\UserRoleService::class => Service\UserRoleService::class,
         ],
@@ -33,10 +33,13 @@ return [
     ],
 
     'controllers' => [
-        'invokables' => [
+        'aliases' => [
             'user' => Controller\UserController::class,
             'staff' => Controller\StaffController::class,
         ],
+        'factories' => [
+            Controller\UserController::class => ReflectionBasedAbstractFactory::class,
+        ]
     ],
 
     'controller_plugins' => [
@@ -57,7 +60,11 @@ return [
     // mvc
     'view_manager' => [
         'template_map' => [
-            'widget/logout' => __DIR__ . '/../view/widget/logout.phtml',
+            'layout::login' => __DIR__ . '/../view/admin/layout/login.phtml',
+            'widget::logout' => __DIR__ . '/../view/widget/logout.phtml',
+
+            'admin-user::login' => __DIR__ . '/../view/admin/user/login.phtml',
+
             'users/children-index' => __DIR__ . '/../view/popov/user/children/index/index.phtml',
             'users/children-monitoring' => __DIR__ . '/../view/popov/user/children/monitoring/index.phtml',
             'users/edit/basic-data' => __DIR__ . '/../view/popov/user/tabs/edit/basic-data.phtml',

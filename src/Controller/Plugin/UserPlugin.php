@@ -11,7 +11,7 @@ namespace Popov\ZfcUser\Controller\Plugin;
 
 use Zend\Stdlib\Exception;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
-use Popov\ZfcUser\Acl\Acl;
+use Popov\ZfcPermission\Acl\Acl;
 use Popov\ZfcUser\Service\UserService;
 use Popov\ZfcUser\Model\User;
 use Agere\Simpler\Plugin\SimplerPlugin;

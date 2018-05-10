@@ -43,7 +43,7 @@ class LoginAction implements MiddlewareInterface, RequestMethodInterface
     )
     {
         $this->userService = $userService;
-        $this->loginForm = $fm->get(LoginForm::class);;
+        $this->loginForm = $fm->get(LoginForm::class);
         $this->auth = $auth;
         $this->urlHelper = $urlHelper;
         $this->redirect['route'] = 'admin/default';

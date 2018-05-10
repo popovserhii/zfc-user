@@ -29,7 +29,7 @@ use Popov\ZfcCore\Service\ConfigAwareTrait;
 use Popov\ZfcUser\Controller\Plugin\UserPlugin;
 //use Popov\Agere\String\StringUtils as AgereString;
 use Popov\ZfcUser\Controller\Plugin\AuthService as AuthPlugin;
-use Popov\ZfcUser\Acl\Acl;
+use Popov\ZfcPermission\Acl\Acl;
 use Zend\Stdlib\Request;
 
 /**

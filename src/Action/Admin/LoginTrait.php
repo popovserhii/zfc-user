@@ -37,9 +37,6 @@ trait LoginTrait
         'params' => [
             'resource' => 'index',
             'action' => 'index',
-            /*@todo-vlad Прибрати коли розберемось*/
-            #'id' => null,
-            #'more' => null
         ],
     ];
 
