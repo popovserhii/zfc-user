@@ -23,7 +23,7 @@ return [
         ],
         'factories' => [
             Service\UserService::class => Service\Factory\UserServiceFactory::class,
-            Event\Authentication::class => Event\Factory\PermissionHelperFactory::class,
+            //Event\Authentication::class => Event\Factory\PermissionHelperFactory::class,
             //Controller\Plugin\AuthService::class => Controller\Plugin\Factory\AuthFactory::class,
             Helper\UserHelper::class => Helper\UserHelperFactory::class,
 
@@ -60,17 +60,20 @@ return [
     // mvc
     'view_manager' => [
         'template_map' => [
-            'layout::login' => __DIR__ . '/../view/admin/layout/login.phtml',
+            'layout::admin-login' => __DIR__ . '/../view/layout/admin/login.phtml',
             'widget::logout' => __DIR__ . '/../view/widget/logout.phtml',
 
-            'admin-user::login' => __DIR__ . '/../view/admin/user/login.phtml',
+            #'admin-user::login' => __DIR__ . '/../view/admin/user/login.phtml',
 
             'users/children-index' => __DIR__ . '/../view/popov/user/children/index/index.phtml',
             'users/children-monitoring' => __DIR__ . '/../view/popov/user/children/monitoring/index.phtml',
             'users/edit/basic-data' => __DIR__ . '/../view/popov/user/tabs/edit/basic-data.phtml',
         ],
-        'template_path_stack' => [
+        /*'template_path_stack' => [
             __DIR__ . '/../view',
+        ],*/
+        'prefix_template_path_stack' => [
+            'user::' => __DIR__ . '/../view/user',
         ],
     ],
 

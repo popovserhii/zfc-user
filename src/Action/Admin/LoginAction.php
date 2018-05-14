@@ -4,12 +4,17 @@ namespace Popov\ZfcUser\Action\Admin;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Http\Server\MiddlewareInterface;
+
+// @todo wait until they will start to use Pst in codebase @see https://github.com/zendframework/zend-mvc/blob/master/src/MiddlewareListener.php#L11
+//use Psr\Http\Server\MiddlewareInterface;
+//use Psr\Http\Server\RequestHandlerInterface;
+use Interop\Http\ServerMiddleware\MiddlewareInterface;
+use Interop\Http\Server\RequestHandlerInterface;
+
 use Fig\Http\Message\RequestMethodInterface;
 use Zend\Authentication\AuthenticationService;
 use Zend\Diactoros\Response\RedirectResponse;
-use Zend\Expressive\Helper\UrlHelper;
+use Popov\ZfcCore\Helper\UrlHelper;
 use Zend\View\Model\ViewModel;
 use Zend\Session\Container as SessionContainer;
 use Popov\ZfcUser\Auth\Auth;
@@ -48,7 +53,7 @@ class LoginAction implements MiddlewareInterface, RequestMethodInterface
         $this->urlHelper = $urlHelper;
         $this->redirect['route'] = 'admin/default';
         $this->redirect['params'] = [
-            'resource' => 'admin',
+            'resource' => 'user',
             'action' => 'dashboard',
         ];
     }

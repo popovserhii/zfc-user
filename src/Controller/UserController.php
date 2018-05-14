@@ -350,7 +350,7 @@ class UserController extends AbstractActionController {
 
         $view = (new ViewModel([
             'form' => $form,
-        ]))->setTemplate('admin-user::login');
+        ]))->setTemplate('user::admin/login');
         // Disable layouts; use this view model in the MVC event instead
         //$view->setTerminal(true);
 

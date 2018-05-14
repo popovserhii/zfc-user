@@ -4,13 +4,13 @@ namespace Popov\ZfcUser\Action\Admin;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Http\Server\MiddlewareInterface;
-use Fig\Http\Message\RequestMethodInterface;
-use Zend\Expressive\Helper\UrlHelper;
+#use Psr\Http\Server\RequestHandlerInterface;
+use Interop\Http\Server\RequestHandlerInterface;
+use Stagem\ZfcAction\MiddlewareInterface;
+use Popov\ZfcCore\Helper\UrlHelper;
 use Popov\ZfcUser\Auth\Auth;
 
-class LogoutAction implements MiddlewareInterface, RequestMethodInterface
+class LogoutAction implements MiddlewareInterface
 {
     use LogoutTrait;
 
