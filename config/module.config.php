@@ -23,13 +23,13 @@ return [
         ],
         'factories' => [
             Service\UserService::class => Service\Factory\UserServiceFactory::class,
-            //Event\Authentication::class => Event\Factory\PermissionHelperFactory::class,
-            //Controller\Plugin\AuthService::class => Controller\Plugin\Factory\AuthFactory::class,
             Helper\UserHelper::class => Helper\UserHelperFactory::class,
-
             Auth\Auth::class => Auth\Factory\AuthFactory::class,
-            //AuthenticationService::class => Auth\Factory\AuthServiceFactory::class,
         ],
+    ],
+
+    'actions' => [
+        'user' => __NAMESPACE__ . '\Action'
     ],
 
     'controllers' => [
