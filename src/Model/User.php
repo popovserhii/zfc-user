@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Popov\ZfcCore\Model\DomainAwareTrait;
-use Stagem\ZfcPool\Model\Pool;
+#use Stagem\Pool\Model\Pool;
 
 /**
  * @ORM\Entity(repositoryClass="Popov\ZfcUser\Model\Repository\UserRepository")
@@ -145,7 +145,6 @@ class User {
 	 * Constructor
 	 */
 	public function __construct() {
-		#$this->cities = new ArrayCollection();
 		$this->roles = new ArrayCollection();
 	}
 
