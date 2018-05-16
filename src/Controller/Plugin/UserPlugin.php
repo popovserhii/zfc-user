@@ -3,39 +3,40 @@
  * User Plugin
  *
  * @category Popov
- * @package Popov_User
+ * @package Popov_ZfcUser
  * @author Serhii Popov <popow.serhii@gmail.com>
  * @datetime: 11.02.2016 15:08
  */
+
 namespace Popov\ZfcUser\Controller\Plugin;
 
-use Zend\Stdlib\Exception;
+use Popov\ZfcUser\Helper\UserHelper;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Popov\ZfcPermission\Acl\Acl;
 use Popov\ZfcUser\Service\UserService;
 use Popov\ZfcUser\Model\User;
-use Agere\Simpler\Plugin\SimplerPlugin;
+use Popov\Simpler\SimplerHelper;
 
 class UserPlugin extends AbstractPlugin
 {
-    /** @var UserService */
-    protected $userService;
+    /** @var UserHelper */
+    protected $userHelper;
 
     /** @var Acl */
     protected $acl;
 
-    /** @var SimplerPlugin */
+    /** @var SimplerHelper */
     protected $simpler;
 
     /**
-     * @param UserService $userService
+     * @param UserHelper $userHelper
      * @param Acl $acl
      */
     public function __construct(
-        UserService $userService,
+        UserHelper $userHelper,
         Acl $acl
     ) {
-        $this->userService = $userService;
+        $this->userHelper = $userHelper;
         $this->acl = $acl;
     }
 
@@ -46,28 +47,20 @@ class UserPlugin extends AbstractPlugin
 
     public function isAdmin()
     {
-        foreach ($this->current()->getRoles() as $role) {
-            if ($role->getResource() == 'all') {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->userHelper->isAdmin();
     }
 
     public function hasAccess($resource)
     {
-        if ($this->isAdmin()) {
-            return true;
-        }
-        $user = $this->current();
-
-        return $this->acl->hasAccess($user, $resource);
+        return $this->userHelper->hasAccess($resource);
     }
 
+    /**
+     * @return UserService
+     */
     public function getUserService()
     {
-        return $this->userService;
+        return $this->userHelper->getUserService();
     }
 
     public function getAcl()
@@ -80,12 +73,7 @@ class UserPlugin extends AbstractPlugin
      */
     public function current()
     {
-        static $user;
-        if (!$user) {
-            $user = $this->getUserService()->getCurrent();
-        }
-
-        return $user;
+        return $this->userHelper->current();
     }
 
     /**
@@ -97,36 +85,16 @@ class UserPlugin extends AbstractPlugin
      */
     public function getBy($value, $field = 'id')
     {
-        $entity = $this->getUserService()->getRepository()->findOneBy([$field => $value]);
-
-        return $entity;
+        return $this->userHelper->getBy($value, $field);
     }
 
-    public function asString($collectionName, $field = SimplerPlugin::DEFAULT_FIELD)
+    public function asString($collectionName, $field = SimplerHelper::DEFAULT_FIELD)
     {
-        $user = $this->current();
-        if (!method_exists($user, $method = 'get' . ucfirst($collectionName))) {
-            throw new Exception\RuntimeException(
-                sprintf('Method for retrieve "%s" collection not exist', $collectionName)
-            );
-        }
-        // if thrown exception then inject simpler plugin
-        $collection = $user->{$method}();
-
-        return $this->simpler->setContext($collection)->asString($field);
+        return $this->userHelper->asString($collectionName, $field);
     }
 
-    public function asArray($collectionName, $field = SimplerPlugin::DEFAULT_FIELD)
+    public function asArray($collectionName, $field = SimplerHelper::DEFAULT_FIELD)
     {
-        $user = $this->current();
-        if (!method_exists($user, $method = 'get' . ucfirst($collectionName))) {
-            throw new Exception\RuntimeException(
-                sprintf('Method for retrieve "%s" collection not exist', $collectionName)
-            );
-        }
-        // if thrown exception then inject simpler plugin
-        $collection = $user->{$method}();
-
-        return $this->simpler->setContext($collection)->asArray($field);
+        return $this->userHelper->asArray($collectionName, $field);
     }
 }

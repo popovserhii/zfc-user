@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Popov\ZfcCore\Model\DomainAwareTrait;
-use Stagem\Pool\Model\Pool;
+use Stagem\ZfcPool\Model\Pool;
 
 /**
  * @ORM\Entity(repositoryClass="Popov\ZfcUser\Model\Repository\UserRepository")
@@ -139,7 +139,7 @@ class User {
      *   @ORM\JoinColumn(name="poolId", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * })
      */
-    private $pool;
+    #private $pool;
 
 	/**
 	 * Constructor
@@ -429,22 +429,6 @@ class User {
         $this->isInner = $isInner;
 
         return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPool()
-    {
-        return $this->pool;
-    }
-
-    /**
-     * @param int $pool
-     */
-    public function setPool($pool)
-    {
-        $this->pool = $pool;
     }
 
     /**
