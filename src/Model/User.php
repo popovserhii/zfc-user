@@ -139,7 +139,7 @@ class User {
      *   @ORM\JoinColumn(name="poolId", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * })
      */
-    //private $pool;
+    #private $pool;
 
 	/**
 	 * Constructor
@@ -429,22 +429,6 @@ class User {
 
         return $this;
     }
-
-    /**
-     * @return int
-     */
-    /*public function getPool()
-    {
-        return $this->pool;
-    }*/
-
-    /**
-     * @param int $pool
-     */
-    /*public function setPool($pool)
-    {
-        $this->pool = $pool;
-    }*/
 
     /**
      * @return string

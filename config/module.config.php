@@ -44,7 +44,7 @@ return [
 
     'controller_plugins' => [
         'factories' => [
-            'user' => Controller\Plugin\Factory\UserHelperFactory::class,
+            'user' => Controller\Plugin\Factory\UserPluginFactory::class,
         ],
     ],
 
@@ -53,7 +53,7 @@ return [
             'user' => View\Helper\UserHelper::class,
         ],
         'factories' => [
-            View\Helper\UserHelper::class => View\Helper\Factory\SimplerHelperFactory::class,
+            View\Helper\UserHelper::class => View\Helper\Factory\UserHelperFactory::class,
         ]
     ],
 
