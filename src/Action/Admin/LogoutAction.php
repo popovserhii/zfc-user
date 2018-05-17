@@ -28,7 +28,7 @@ class LogoutAction implements MiddlewareInterface
         $this->urlHelper = $urlHelper;
         $this->redirect['route'] = 'admin/default';
         $this->redirect['params'] = [
-            'resource' => 'user',
+            'controller' => 'user',
             'action' => 'login',
         ];
     }

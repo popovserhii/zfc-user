@@ -25,7 +25,7 @@ class CreateAction implements MiddlewareInterface, RequestMethodInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         return new RedirectResponse($this->urlHelper->generate('admin/default', [
-            'resource' => 'user',
+            'controller' => 'user',
             'action' => 'edit',
         ]));
     }

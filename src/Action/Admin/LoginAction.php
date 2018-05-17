@@ -53,7 +53,7 @@ class LoginAction implements MiddlewareInterface, RequestMethodInterface
         $this->urlHelper = $urlHelper;
         $this->redirect['route'] = 'admin/default';
         $this->redirect['params'] = [
-            'resource' => 'user',
+            'controller' => 'user',
             'action' => 'dashboard',
         ];
     }

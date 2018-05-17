@@ -35,7 +35,7 @@ trait LoginTrait
     protected $redirect = [
         'route' => 'default',
         'params' => [
-            'resource' => 'index',
+            'controller' => 'index',
             'action' => 'index',
         ],
     ];

@@ -28,7 +28,7 @@ $user = $userHelper->current();
         <span><?= $user->getEmail() ?></span>
     </div>
 	<a class="logout-btn" onclick="if(confirm('Do you want logout?')) document.location.href='<?= $this->url('admin/default', [
-       'resource' => 'user',
+       'controller' => 'user',
        'action' => 'logout',
 	]) ?>'">
         <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
