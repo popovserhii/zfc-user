@@ -24,7 +24,7 @@
   },
   "extra": {
     "zf": {
-      "component": "Stagem\\ZfcUser",
+      "component": "Popov\\ZfcUser",
       "config-provider": "Popov\\ZfcUser\\ConfigProvider"
     }
   }
