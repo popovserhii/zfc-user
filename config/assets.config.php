@@ -14,6 +14,8 @@ return [
                     ],
                     'options' => [
                         'move_raw' => true,
+                        'disable_source_path' => true,
+                        'targetPath' => 'images',
                     ]
                 ],
             ],
