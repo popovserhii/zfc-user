@@ -6,7 +6,7 @@ use Zend\Form\Form;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilter;
 use Zend\I18n\Translator\TranslatorAwareInterface;
-use Stagem\ZfcTranslator\TranslatorAwareTrait;
+use Stagem\ZfcLang\TranslatorAwareTrait;
 
 class LoginForm extends Form implements TranslatorAwareInterface
 {
