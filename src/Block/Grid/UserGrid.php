@@ -16,12 +16,15 @@
 namespace Popov\ZfcUser\Block\Grid;
 
 use Popov\ZfcDataGrid\Block\AbstractGrid;
+use Popov\ZfcUser\Model\User;
 use ZfcDatagrid\Action\Mass;
 
 class UserGrid extends AbstractGrid
 {
     //protected $createButtonTitle = '';
     protected $backButtonTitle = '';
+
+    protected $id = User::MNEMO;
 
     public function init()
     {
