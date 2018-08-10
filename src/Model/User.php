@@ -1,17 +1,21 @@
 <?php
+
 namespace Popov\ZfcUser\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Popov\ZfcCore\Model\DomainAwareTrait;
-#use Stagem\Pool\Model\Pool;
 
 /**
  * @ORM\Entity(repositoryClass="Popov\ZfcUser\Model\Repository\UserRepository")
  * @ORM\Table(name="user")
  */
-class User {
+class User
+{
+    const MNEMO = 'user';
+
+    const TABLE = 'user';
 
     use DomainAwareTrait;
 
@@ -33,49 +37,49 @@ class User {
      * @var string
      * @ORM\Column(name="password", type="string", length=32, nullable=false)
      */
-	private $password;
+    private $password;
 
     /**
      * @var string
      * @ORM\Column(name="firstName", type="string", nullable=false)
      */
-	private $firstName;
+    private $firstName;
 
     /**
      * @var string
      * @ORM\Column(name="lastName", type="string", nullable=false)
      */
-	private $lastName;
+    private $lastName;
 
     /**
      * @var string
      * @ORM\Column(name="patronymic", type="string", nullable=true)
      */
-	private $patronymic;
+    private $patronymic;
 
     /**
      * @var string
      * @ORM\Column(name="phone", type="string", length=13, nullable=true)
      */
-	private $phone;
+    private $phone;
 
     /**
      * @var string
      * @ORM\Column(name="phoneWork", type="string", length=13, nullable=true)
      */
-	private $phoneWork;
+    private $phoneWork;
 
     /**
      * @var string
      * @ORM\Column(name="phoneInternal", type="string", length=13, nullable=true)
      */
-	private $phoneInternal;
+    private $phoneInternal;
 
     /**
      * @var string
      * @ORM\Column(name="post", type="string", nullable=true)
      */
-	private $post;
+    private $post;
 
     /**
      * @var \DateTime
@@ -93,60 +97,57 @@ class User {
      * @var \DateTime
      * @ORM\Column(name="employedAt", type="datetime", nullable=true)
      */
-	private $employedAt;
+    private $employedAt;
 
     /**
      * @var string
      * @ORM\Column(name="photo", type="string", nullable=true)
      */
-	private $photo;
+    private $photo;
 
     /**
      * Can user access to inner system
-     *
-     * By default set to "false" that meat you should obviously set "true" for users witch should have access to inner system
+     * By default set to "false" that meat you should obviously set "true" for users witch should have access to inner
+     * system
      *
      * @var bool
      * @ORM\Column(name="isInner", type="integer", length=1, nullable=false)
      */
-	private $isInner = 0;
+    private $isInner = 0;
 
     /**
      * @var string
      * @ORM\Column(name="notation", type="string", nullable=true)
      */
-	private $notation;
+    private $notation;
 
     /**
      * Many Users have Many Roles.
      *
      * @var ArrayCollection
-     *
      * @ORM\ManyToMany(targetEntity="Popov\ZfcRole\Model\Role", inversedBy="users", cascade={"persist"})
      * @ORM\JoinTable(name="users_roles",
      *    joinColumns={@ORM\JoinColumn(name="userId", referencedColumnName="id")},
      *    inverseJoinColumns={@ORM\JoinColumn(name="roleId", referencedColumnName="id")}
      * )
      */
-	private $roles;
-
+    private $roles;
 
     /**
      * @var Pool
-     *
      * @ORM\ManyToOne(targetEntity="Stagem\Pool\Model\Pool", inversedBy="users", cascade={"persist", "remove"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="poolId", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * })
      */
     #private $pool;
-
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		$this->roles = new ArrayCollection();
-	}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->roles = new ArrayCollection();
+    }
 
     /**
      * @return int

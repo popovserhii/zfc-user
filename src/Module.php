@@ -9,8 +9,6 @@ use	Zend\EventManager\Event;
 use	Zend\Http\Request as HttpRequest;
 use Zend\Console\Request as ConsoleRequest;
 use	Popov\ZfcPermission\Acl\Acl;
-use	Popov\ZfcUser\Controller\Plugin\AuthService;
-use Popov\ZfcUser\Event\Authentication;
 
 class Module {
 

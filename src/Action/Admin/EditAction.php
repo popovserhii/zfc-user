@@ -4,12 +4,17 @@ namespace Popov\ZfcUser\Action\Admin;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Http\Server\MiddlewareInterface;
+
+// @todo wait until they will start to use Pst in codebase @see https://github.com/zendframework/zend-mvc/blob/master/src/MiddlewareListener.php#L11
+//use Psr\Http\Server\MiddlewareInterface;
+//use Psr\Http\Server\RequestHandlerInterface;
+use Interop\Http\ServerMiddleware\MiddlewareInterface;
+use Interop\Http\Server\RequestHandlerInterface;
+
 use Fig\Http\Message\RequestMethodInterface;
 use Zend\Diactoros\Response\RedirectResponse;
-use Zend\Expressive\Router\RouteResult;
-use Zend\Expressive\Helper\UrlHelper;
+use Popov\ZfcCore\Helper\UrlHelper;
+use Zend\Router\RouteMatch;
 use Zend\View\Model\ViewModel;
 use Zend\Expressive\Flash\FlashMessageMiddleware;
 use Zend\EventManager\EventManagerAwareInterface;
@@ -39,10 +44,12 @@ class EditAction implements MiddlewareInterface, RequestMethodInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $flash = $request->getAttribute('flash');
-        $route = $request->getAttribute(RouteResult::class);
+        $route = $request->getAttribute(RouteMatch::class);
+
+        //$route->getMatchedRouteName(), $route->getParams()
 
         /** @var User $user */
-        $user = ($user = $this->userService->find($id = (int) ($route->getMatchedParams()['id'] ?? 0)))
+        $user = ($user = $this->userService->find($id = (int) ($route->getParams()['id'] ?? 0)))
             ? $user
             : $this->userService->getObjectModel();
 
@@ -67,14 +74,14 @@ class EditAction implements MiddlewareInterface, RequestMethodInterface
 
                 #$this->getEventManager()->trigger($route->getParam('action') . '.post', $user, ['password' => $password]);
 
-                $flash->addMessage('User has been successfully saved', 'success');
+                #$flash->addMessage('User has been successfully saved', 'success');
 
                 return new RedirectResponse($this->urlHelper->generate('admin/default', [
                     'controller' => 'user',
                     'action' => 'index',
                 ]));
             } else {
-                $flash->addMessage('Form is invalid. Please, check the correctness of the entered data', 'error');
+                #$flash->addMessage('Form is invalid. Please, check the correctness of the entered data', 'error');
             }
         }
 

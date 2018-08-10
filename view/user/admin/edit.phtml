@@ -15,7 +15,7 @@
 ?>
 <?php
 $form = $this->vars('form');
-$form->setAttribute('action', $this->url('admin/default', [
+$form->setAttribute('action', $this->url('admin/default/id', [
     'controller' => $this->current('controller'),
     'action' => $this->current('action'),
     'id' => (int) $form->getObject()->getId(),

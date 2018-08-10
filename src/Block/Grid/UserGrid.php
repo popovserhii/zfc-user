@@ -96,7 +96,7 @@ class UserGrid extends AbstractGrid
             'type' => ['name' => 'DateTime'],
         ]);
 
-        $this->add([
+        /*$this->add([
             'name' => 'Select',
             'construct' => ['isInner', 'user'],
             'label' => 'Is Inner',
@@ -106,7 +106,7 @@ class UserGrid extends AbstractGrid
                 '0' => 'No',
                 '1' => 'Yes',
             ]],
-        ]);
+        ]);*/
 
         $this->add([
             'name' => 'Action',
@@ -120,7 +120,7 @@ class UserGrid extends AbstractGrid
             'formatters' => [[
                 'name' => 'Link',
                 'attributes' => ['class' => 'pencil-edit-icon', 'target' => '_blank'],
-                'link' => ['href' => '/admin/user/edit', 'placeholder_column' => $colId]
+                'link' => ['href' => '/admin/user/edit/%s', 'placeholder_column' => $colId]
             ]],
         ]);
 

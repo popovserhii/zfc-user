@@ -16,7 +16,7 @@ use Popov\ZfcUser\Model\Repository\UserRepository;
 /**
  * Class UserService
  *
- * @method getRepository() UserRepository
+ * @method UserRepository getRepository()
  */
 class UserService extends DomainServiceAbstract
 {
