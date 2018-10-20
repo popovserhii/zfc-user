@@ -81,7 +81,7 @@ class UserFieldset extends Fieldset
                 //'required' => 'required',
             ],
         ]);
-        $this->add([
+        /*$this->add([
             'name' => 'patronymic',
             'options' => [
                 'label' => $this->__('Patronymic'),
@@ -142,7 +142,7 @@ class UserFieldset extends Fieldset
             'attributes' => [
                 'type' => 'file',
             ],
-        ]);
+        ]);*/
 
         $this->add([
             'name' => 'notation',
@@ -223,7 +223,7 @@ class UserFieldset extends Fieldset
                     ],
                 ],
             ],
-            'phone' => [
+            /*'phone' => [
                 'required' => false,
                 'filters' => [
                     ['name' => 'StringTrim'],
@@ -249,7 +249,7 @@ class UserFieldset extends Fieldset
                         'name' => 'Digits',
                     ],
                 ],
-            ],
+            ],*/
             'email' => [
                 'required' => true,
                 'validators' => [
