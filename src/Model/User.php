@@ -2,10 +2,12 @@
 
 namespace Popov\ZfcUser\Model;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Popov\ZfcCore\Model\DomainAwareTrait;
+use Popov\ZfcRole\Model\Role;
 
 /**
  * @ORM\Entity(repositoryClass="Popov\ZfcUser\Model\Repository\UserRepository")
@@ -82,19 +84,19 @@ class User
     private $post;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      * @ORM\Column(name="birthedAt", type="datetime", nullable=true)
      */
     private $birthedAt;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      * @ORM\Column(name="createdAt", type="datetime", nullable=true)
      */
     private $createdAt;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      * @ORM\Column(name="employedAt", type="datetime", nullable=true)
      */
     private $employedAt;
@@ -124,7 +126,7 @@ class User
     /**
      * Many Users have Many Roles.
      *
-     * @var ArrayCollection
+     * @var Role[]
      * @ORM\ManyToMany(targetEntity="Popov\ZfcRole\Model\Role", inversedBy="users", cascade={"persist"})
      * @ORM\JoinTable(name="users_roles",
      *    joinColumns={@ORM\JoinColumn(name="userId", referencedColumnName="id")},
@@ -141,6 +143,7 @@ class User
      * })
      */
     #private $pool;
+    
     /**
      * Constructor
      */
@@ -152,7 +155,7 @@ class User
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -161,7 +164,7 @@ class User
      * @param int $id
      * @return User
      */
-    public function setId($id)
+    public function setId(int $id): User
     {
         $this->id = $id;
 
@@ -171,7 +174,7 @@ class User
     /**
      * @return string
      */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -180,7 +183,7 @@ class User
      * @param string $email
      * @return User
      */
-    public function setEmail($email)
+    public function setEmail(string $email): User
     {
         $this->email = $email;
 
@@ -190,7 +193,7 @@ class User
     /**
      * @return string
      */
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -199,7 +202,7 @@ class User
      * @param string $password
      * @return User
      */
-    public function setPassword($password)
+    public function setPassword(string $password): User
     {
         $this->password = $password;
 
@@ -209,7 +212,7 @@ class User
     /**
      * @return string
      */
-    public function getFirstName()
+    public function getFirstName(): string
     {
         return $this->firstName;
     }
@@ -218,7 +221,7 @@ class User
      * @param string $firstName
      * @return User
      */
-    public function setFirstName($firstName)
+    public function setFirstName(string $firstName): User
     {
         $this->firstName = $firstName;
 
@@ -228,7 +231,7 @@ class User
     /**
      * @return string
      */
-    public function getLastName()
+    public function getLastName(): string
     {
         return $this->lastName;
     }
@@ -237,7 +240,7 @@ class User
      * @param string $lastName
      * @return User
      */
-    public function setLastName($lastName)
+    public function setLastName(string $lastName): User
     {
         $this->lastName = $lastName;
 
@@ -247,7 +250,7 @@ class User
     /**
      * @return string
      */
-    public function getPatronymic()
+    public function getPatronymic(): string
     {
         return $this->patronymic;
     }
@@ -256,7 +259,7 @@ class User
      * @param string $patronymic
      * @return User
      */
-    public function setPatronymic($patronymic)
+    public function setPatronymic(string $patronymic): User
     {
         $this->patronymic = $patronymic;
 
@@ -266,7 +269,7 @@ class User
     /**
      * @return string
      */
-    public function getPhone()
+    public function getPhone(): string
     {
         return $this->phone;
     }
@@ -275,7 +278,7 @@ class User
      * @param string $phone
      * @return User
      */
-    public function setPhone($phone)
+    public function setPhone(string $phone): User
     {
         $this->phone = $phone;
 
@@ -285,7 +288,7 @@ class User
     /**
      * @return string
      */
-    public function getPhoneWork()
+    public function getPhoneWork(): string
     {
         return $this->phoneWork;
     }
@@ -294,7 +297,7 @@ class User
      * @param string $phoneWork
      * @return User
      */
-    public function setPhoneWork($phoneWork)
+    public function setPhoneWork(string $phoneWork): User
     {
         $this->phoneWork = $phoneWork;
 
@@ -304,7 +307,7 @@ class User
     /**
      * @return string
      */
-    public function getPhoneInternal()
+    public function getPhoneInternal(): string
     {
         return $this->phoneInternal;
     }
@@ -313,7 +316,7 @@ class User
      * @param string $phoneInternal
      * @return User
      */
-    public function setPhoneInternal($phoneInternal)
+    public function setPhoneInternal(string $phoneInternal): User
     {
         $this->phoneInternal = $phoneInternal;
 
@@ -323,7 +326,7 @@ class User
     /**
      * @return string
      */
-    public function getPost()
+    public function getPost(): string
     {
         return $this->post;
     }
@@ -332,7 +335,7 @@ class User
      * @param string $post
      * @return User
      */
-    public function setPost($post)
+    public function setPost(string $post): User
     {
         $this->post = $post;
 
@@ -340,18 +343,18 @@ class User
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getBirthedAt()
+    public function getBirthedAt(): DateTime
     {
         return $this->birthedAt;
     }
 
     /**
-     * @param \DateTime $birthedAt
+     * @param DateTime $birthedAt
      * @return User
      */
-    public function setBirthedAt($birthedAt)
+    public function setBirthedAt(DateTime $birthedAt): User
     {
         $this->birthedAt = $birthedAt;
 
@@ -359,34 +362,37 @@ class User
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
     /**
-     * @param \DateTime $createdAt
+     * @param DateTime $createdAt
+     * @return User
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(DateTime $createdAt): User
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getEmployedAt()
+    public function getEmployedAt(): DateTime
     {
         return $this->employedAt;
     }
 
     /**
-     * @param \DateTime $employedAt
+     * @param DateTime $employedAt
      * @return User
      */
-    public function setEmployedAt($employedAt)
+    public function setEmployedAt(DateTime $employedAt): User
     {
         $this->employedAt = $employedAt;
 
@@ -396,7 +402,7 @@ class User
     /**
      * @return string
      */
-    public function getPhoto()
+    public function getPhoto(): ?string
     {
         return $this->photo;
     }
@@ -405,7 +411,7 @@ class User
      * @param string $photo
      * @return User
      */
-    public function setPhoto($photo)
+    public function setPhoto(string $photo): User
     {
         $this->photo = $photo;
 
@@ -415,7 +421,7 @@ class User
     /**
      * @return bool
      */
-    public function getIsInner()
+    public function isInner(): bool
     {
         return $this->isInner;
     }
@@ -424,7 +430,7 @@ class User
      * @param bool $isInner
      * @return User
      */
-    public function setIsInner($isInner)
+    public function setIsInner(bool $isInner): User
     {
         $this->isInner = $isInner;
 
@@ -434,7 +440,7 @@ class User
     /**
      * @return string
      */
-    public function getNotation()
+    public function getNotation(): string
     {
         return $this->notation;
     }
@@ -443,7 +449,7 @@ class User
      * @param string $notation
      * @return User
      */
-    public function setNotation($notation)
+    public function setNotation(string $notation): User
     {
         $this->notation = $notation;
 
@@ -451,7 +457,7 @@ class User
     }
 
     /**
-     * @return ArrayCollection
+     * @return Role[]
      */
     public function getRoles()
     {
@@ -459,10 +465,10 @@ class User
     }
 
     /**
-     * @param ArrayCollection $roles
+     * @param Role[] $roles
      * @return User
      */
-    public function setRoles($roles)
+    public function setRoles($roles): User
     {
         $this->roles = $roles;
 
@@ -488,11 +494,17 @@ class User
         }
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return trim($this->getFirstName() . ' ' . $this->getLastName());
     }
 
+    /**
+     * @return string
+     */
     public function getFullName()
     {
         return trim($this->getName() . ' ' . $this->getPatronymic());

@@ -43,6 +43,9 @@ class UserService extends DomainServiceAbstract
      */
     public function getCurrent()
     {
+        #if (!$this->current) {
+        #    $this->current = $this->getObjectManager()->find(User::class, 1);
+        #}
         return $this->current;
     }
 

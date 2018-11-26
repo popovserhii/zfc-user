@@ -27,6 +27,10 @@ class UserServiceFactory
             /** @var User $user */
             $user = $auth->getIdentity();
             $user = $om->merge($user);
+
+            $storage = $auth->getStorage();
+            $storage->write($user);
+
             $userService->setCurrent($user);
         }
 

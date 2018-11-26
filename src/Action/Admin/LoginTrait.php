@@ -32,6 +32,7 @@ trait LoginTrait
     /** @var Auth */
     protected $auth;
 
+    /** @var array */
     protected $redirect = [
         'route' => 'default',
         'params' => [
@@ -51,7 +52,7 @@ trait LoginTrait
             $params = $request->getParsedBody();
             $this->loginForm->setData($params);
             if ($this->loginForm->isValid()) {
-                return $this->aunthenticate($params['email'], $params['password']);
+                return $this->authenticate($params['email'], $params['password']);
             }
         }
         return false;
@@ -63,7 +64,7 @@ trait LoginTrait
      * @return bool
      * @throws \Zend\Authentication\Exception\ExceptionInterface
      */
-    public function aunthenticate($email, $password)
+    public function authenticate($email, $password)
     {
         if ($this->auth->authenticate($email, $password)) {
             /** @var User $user */
@@ -72,26 +73,13 @@ trait LoginTrait
                 'password' => Auth::getHashPassword($password)
             ]);
 
+            $this->userService->setCurrent($user);
             $storage = $this->auth->getAuthService()->getStorage();
             $storage->write($user);
+
             return true;
         }
-    }
 
-    /**
-     * @param $email
-     * @return bool
-     * @throws \Zend\Authentication\Exception\ExceptionInterface
-     */
-    public function authenticateSocialByEmail($email)
-    {
-        /** @var User $user */
-        $user = $this->userService->getRepository()->findOneBy([
-            'email' => $email,
-        ]);
-
-        $storage = $this->auth->getAuthService()->getStorage();
-        $storage->write($user);
-        return true;
+        return false;
     }
 }

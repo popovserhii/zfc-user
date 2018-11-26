@@ -41,7 +41,6 @@ class LoginAction implements MiddlewareInterface, RequestMethodInterface
 
     public function __construct(
         UserService $userService,
-        //LoginForm $loginForm,
         FormElementManager $fm,
         Auth $auth,
         UrlHelper $urlHelper
@@ -59,6 +58,21 @@ class LoginAction implements MiddlewareInterface, RequestMethodInterface
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
+        if (($response = $this->action($request)) instanceof RedirectResponse) {
+            return $response;
+        }
+
+        return $handler->handle($request->withAttribute(ViewModel::class, $response));
+    }
+
+    /**
+     * Execute the request
+     *
+     * @param ServerRequestInterface $request
+     * @return ViewModel|RedirectResponse
+     */
+    public function action(ServerRequestInterface $request)
     {
         $authService = $this->auth->getAuthService();
 
@@ -83,6 +97,6 @@ class LoginAction implements MiddlewareInterface, RequestMethodInterface
             'form' => $this->loginForm,
         ]);
 
-        return $handler->handle($request->withAttribute(ViewModel::class, $view));
+        return $view;
     }
 }
