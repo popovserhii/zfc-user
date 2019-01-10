@@ -1,7 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Migrations;
+namespace DoctrineORMModule\Migrations;
 
+use DateTime;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
@@ -12,11 +13,22 @@ class Version20180404060817 extends AbstractMigration
 {
     public function up(Schema $schema)
     {
-        $this->connection->exec("INSERT INTO `user` (`email`, `password`, `firstName`, `lastName`, `patronymic`, `phone`, `phoneWork`, `phoneInternal`, `post`, `birthedAt`, `employedAt`, `photo`, `notation`, `createdAt`, `isInner`) VALUES ('storage@stagem.com.ua', 'c80f4ae8a82e0033305cae3f1928d1d3', 'Support Stagem', 'Адмім', '', '', '', '', '', NULL, NULL, '', '', '2018-03-16 16:23:40', '1');");
+        $this->connection->insert('user', [
+            'email' => 'admin@stagem.com.ua',
+            'password' => '84862b7574a0bc370277c63c6d6eaacc', // 123456
+            'firstName' => 'Support',
+            'lastName' => 'Admin',
+            'createdAt' => (new DateTime())->format('Y-m-d H:i:s'),
+            'isInner' => 1,
+        ]);
         $userId = $this->connection->lastInsertId();
-
         #$this->abortIf(!$userId, 'Cannot insert admin user');
-        $this->connection->exec("INSERT INTO `role` (`name`, `mnemo`, `resource`) VALUES ('Admin', 'admin', 'all')");
+
+        $this->connection->insert('role', [
+            'name' => 'Admin',
+            'mnemo' => 'admin',
+            'resource' => 'all',
+        ]);
         $roleId = $this->connection->lastInsertId();
 
         $this->connection->insert('users_roles', [
