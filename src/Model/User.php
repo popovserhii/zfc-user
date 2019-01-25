@@ -87,7 +87,7 @@ class User
      * @var DateTime
      * @ORM\Column(name="birthedAt", type="datetime", nullable=true)
      */
-    private $birthedAt;
+    #private $birthedAt;
 
     /**
      * @var DateTime
@@ -345,21 +345,21 @@ class User
     /**
      * @return DateTime
      */
-    public function getBirthedAt(): DateTime
+    /*public function getBirthedAt(): DateTime
     {
         return $this->birthedAt;
-    }
+    }*/
 
     /**
      * @param DateTime $birthedAt
      * @return User
      */
-    public function setBirthedAt(DateTime $birthedAt): User
+    /*public function setBirthedAt(DateTime $birthedAt): User
     {
         $this->birthedAt = $birthedAt;
 
         return $this;
-    }
+    }*/
 
     /**
      * @return DateTime
