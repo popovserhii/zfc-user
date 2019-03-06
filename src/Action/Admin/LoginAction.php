@@ -80,8 +80,9 @@ class LoginAction implements MiddlewareInterface, RequestMethodInterface
             return new RedirectResponse($this->urlHelper->generate($this->redirect['route'], $this->redirect['params']));
         }
 
-        if ($this->login($request)) {
-            $user = $authService->getIdentity();
+        /** @var User $user */
+        if ($user = $this->login($request)) {
+            //$user = $authService->getIdentity();
             if ('all' === $user->getRoles()->first()->getResource()) {
                 // Set expire login
                 $sessionAuth = new SessionContainer('Zend_Auth');
