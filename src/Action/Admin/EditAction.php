@@ -69,7 +69,9 @@ class EditAction implements MiddlewareInterface, RequestMethodInterface
                 }
 
                 $om = $this->userService->getObjectManager();
-                $om->persist($user);
+                if (!$om->contains($user)) {
+                    $om->persist($user);
+                }
                 $om->flush();
 
                 #$this->getEventManager()->trigger($route->getParam('action') . '.post', $user, ['password' => $password]);

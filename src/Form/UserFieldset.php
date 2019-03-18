@@ -23,9 +23,10 @@ use Zend\I18n\Translator\TranslatorAwareInterface;
 use DoctrineModule\Persistence\ProvidesObjectManager;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 
-use Popov\ZfcRole\Model\Role;
 use Popov\ZfcCore\Service\DomainServiceAwareInterface;
 use Popov\ZfcCore\Service\DomainServiceAwareTrait;
+use Popov\ZfcRole\Model\Role;
+use Popov\ZfcUser\Model\User;
 
 class UserFieldset extends Fieldset
     implements InputFilterProviderInterface, TranslatorAwareInterface, DomainServiceAwareInterface, ObjectManagerAwareInterface
@@ -81,6 +82,7 @@ class UserFieldset extends Fieldset
                 //'required' => 'required',
             ],
         ]);
+
         /*$this->add([
             'name' => 'patronymic',
             'options' => [
@@ -88,7 +90,7 @@ class UserFieldset extends Fieldset
             ],
             'attributes' => [
             ],
-        ]);
+        ]);*/
 
         $this->add([
             'name' => 'phone',
@@ -96,13 +98,15 @@ class UserFieldset extends Fieldset
                 'label' => $this->__('Phone'),
             ],
         ]);
+
         $this->add([
             'name' => 'phoneWork',
             'options' => [
                 'label' => $this->__('Work phone'),
             ],
         ]);
-        $this->add([
+
+        /*$this->add([
             'name' => 'phoneInternal',
             'options' => [
                 'label' => $this->__('Internal phone'),
@@ -223,7 +227,7 @@ class UserFieldset extends Fieldset
                     ],
                 ],
             ],
-            /*'phone' => [
+            'phone' => [
                 'required' => false,
                 'filters' => [
                     ['name' => 'StringTrim'],
@@ -249,8 +253,35 @@ class UserFieldset extends Fieldset
                         'name' => 'Digits',
                     ],
                 ],
-            ],*/
-            'email' => [
+            ],
+            'phoneWork' => [
+                'required' => false,
+                'filters' => [
+                    ['name' => 'StringTrim'],
+                    [
+                        'name' => 'PregReplace',
+                        'options' => [
+                            'pattern' => '/[^0-9]/',
+                            'replacement' => '',
+                        ],
+                    ],
+                ],
+                'validators' => [
+                    [
+                        'name' => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                            'min' => 11,
+                            'max' => 13,
+                            'message' => 'Phone number must contains 11-13 numbers',
+                        ],
+                    ],
+                    [
+                        'name' => 'Digits',
+                    ],
+                ],
+            ],
+            /*'email' => [
                 'required' => true,
                 'validators' => [
                     [
@@ -260,7 +291,38 @@ class UserFieldset extends Fieldset
                         ],
                     ],
                 ],
-            ],
+            ],*/
+            'email' => [
+                'required' => true,
+                'name' => 'email',
+                'validators' => [
+                    [
+                        'name' => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                            'max' => 100,
+                        ],
+                    ],
+                    [
+                        'name' => 'EmailAddress',
+                        'options' => [
+                            'message' => 'Invalid email address',
+                        ],
+                    ],
+                    [
+                        'name' => \DoctrineModule\Validator\UniqueObject::class,
+                        'options' => [
+                            'object_manager' => $om = $this->getObjectManager(),
+                            'object_repository' => $om->getRepository(User::class),
+                            'target_class' => User::class,
+                            'fields' => ['id', 'email'],
+                            'messages' => [
+                                //'objectNotUnique' => 'The email must be unique',
+                            ],
+                        ],
+                    ],
+                ],
+            ]
         ];
     }
 
