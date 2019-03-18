@@ -281,17 +281,6 @@ class UserFieldset extends Fieldset
                     ],
                 ],
             ],
-            /*'email' => [
-                'required' => true,
-                'validators' => [
-                    [
-                        'name' => 'EmailAddress',
-                        'options' => [
-                            'message' => 'Invalid email address',
-                        ],
-                    ],
-                ],
-            ],*/
             'email' => [
                 'required' => true,
                 'name' => 'email',
@@ -315,7 +304,8 @@ class UserFieldset extends Fieldset
                             'object_manager' => $om = $this->getObjectManager(),
                             'object_repository' => $om->getRepository(User::class),
                             'target_class' => User::class,
-                            'fields' => ['id', 'email'],
+                            'use_context' => true,
+                            'fields' => ['email'],
                             'messages' => [
                                 //'objectNotUnique' => 'The email must be unique',
                             ],
