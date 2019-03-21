@@ -61,7 +61,7 @@ trait LoginTrait
     /**
      * @param $email
      * @param $password
-     * @return bool
+     * @return User|bool $user
      * @throws \Zend\Authentication\Exception\ExceptionInterface
      */
     public function authenticate($email, $password)
@@ -73,11 +73,11 @@ trait LoginTrait
                 'password' => Auth::getHashPassword($password)
             ]);
 
-            $this->userService->setCurrent($user);
+            #$this->userService->setCurrent($user);
             $storage = $this->auth->getAuthService()->getStorage();
-            $storage->write($user);
+            $storage->write($user->getId());
 
-            return true;
+            return $user;
         }
 
         return false;

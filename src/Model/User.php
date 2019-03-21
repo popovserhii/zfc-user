@@ -164,7 +164,7 @@ class User
      * @param int $id
      * @return User
      */
-    public function setId(int $id): User
+    public function setId(int $id): ?User
     {
         $this->id = $id;
 
@@ -174,7 +174,7 @@ class User
     /**
      * @return string
      */
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -183,7 +183,7 @@ class User
      * @param string $email
      * @return User
      */
-    public function setEmail(string $email): User
+    public function setEmail(string $email): ?User
     {
         $this->email = $email;
 
@@ -193,7 +193,7 @@ class User
     /**
      * @return string
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -202,7 +202,7 @@ class User
      * @param string $password
      * @return User
      */
-    public function setPassword(string $password): User
+    public function setPassword(string $password): ?User
     {
         $this->password = $password;
 
@@ -212,7 +212,7 @@ class User
     /**
      * @return string
      */
-    public function getFirstName(): string
+    public function getFirstName(): ?string
     {
         return $this->firstName;
     }
@@ -221,7 +221,7 @@ class User
      * @param string $firstName
      * @return User
      */
-    public function setFirstName(string $firstName): User
+    public function setFirstName(string $firstName): ?User
     {
         $this->firstName = $firstName;
 
@@ -231,7 +231,7 @@ class User
     /**
      * @return string
      */
-    public function getLastName(): string
+    public function getLastName(): ?string
     {
         return $this->lastName;
     }
@@ -240,7 +240,7 @@ class User
      * @param string $lastName
      * @return User
      */
-    public function setLastName(string $lastName): User
+    public function setLastName(string $lastName): ?User
     {
         $this->lastName = $lastName;
 
@@ -250,7 +250,7 @@ class User
     /**
      * @return string
      */
-    public function getPatronymic(): string
+    public function getPatronymic(): ?string
     {
         return $this->patronymic;
     }
@@ -259,7 +259,7 @@ class User
      * @param string $patronymic
      * @return User
      */
-    public function setPatronymic(string $patronymic): User
+    public function setPatronymic(string $patronymic): ?User
     {
         $this->patronymic = $patronymic;
 
@@ -269,7 +269,7 @@ class User
     /**
      * @return string
      */
-    public function getPhone(): string
+    public function getPhone(): ?string
     {
         return $this->phone;
     }
@@ -278,7 +278,7 @@ class User
      * @param string $phone
      * @return User
      */
-    public function setPhone(string $phone): User
+    public function setPhone(string $phone): ?User
     {
         $this->phone = $phone;
 
@@ -288,7 +288,7 @@ class User
     /**
      * @return string
      */
-    public function getPhoneWork(): string
+    public function getPhoneWork(): ?string
     {
         return $this->phoneWork;
     }
@@ -297,7 +297,7 @@ class User
      * @param string $phoneWork
      * @return User
      */
-    public function setPhoneWork(string $phoneWork): User
+    public function setPhoneWork(string $phoneWork): ?User
     {
         $this->phoneWork = $phoneWork;
 
@@ -307,7 +307,7 @@ class User
     /**
      * @return string
      */
-    public function getPhoneInternal(): string
+    public function getPhoneInternal(): ?string
     {
         return $this->phoneInternal;
     }
@@ -316,7 +316,7 @@ class User
      * @param string $phoneInternal
      * @return User
      */
-    public function setPhoneInternal(string $phoneInternal): User
+    public function setPhoneInternal(string $phoneInternal): ?User
     {
         $this->phoneInternal = $phoneInternal;
 
@@ -326,7 +326,7 @@ class User
     /**
      * @return string
      */
-    public function getPost(): string
+    public function getPost(): ?string
     {
         return $this->post;
     }
@@ -335,7 +335,7 @@ class User
      * @param string $post
      * @return User
      */
-    public function setPost(string $post): User
+    public function setPost(string $post): ?User
     {
         $this->post = $post;
 
@@ -364,7 +364,7 @@ class User
     /**
      * @return DateTime
      */
-    public function getCreatedAt(): DateTime
+    public function getCreatedAt(): ?DateTime
     {
         return $this->createdAt;
     }
@@ -373,7 +373,7 @@ class User
      * @param DateTime $createdAt
      * @return User
      */
-    public function setCreatedAt(DateTime $createdAt): User
+    public function setCreatedAt(DateTime $createdAt): ?User
     {
         $this->createdAt = $createdAt;
 
@@ -383,7 +383,7 @@ class User
     /**
      * @return DateTime
      */
-    public function getEmployedAt(): DateTime
+    public function getEmployedAt(): ?DateTime
     {
         return $this->employedAt;
     }
@@ -392,7 +392,7 @@ class User
      * @param DateTime $employedAt
      * @return User
      */
-    public function setEmployedAt(DateTime $employedAt): User
+    public function setEmployedAt(DateTime $employedAt): ?User
     {
         $this->employedAt = $employedAt;
 
@@ -411,7 +411,7 @@ class User
      * @param string $photo
      * @return User
      */
-    public function setPhoto(string $photo): User
+    public function setPhoto(string $photo): ?User
     {
         $this->photo = $photo;
 
@@ -421,7 +421,7 @@ class User
     /**
      * @return bool
      */
-    public function isInner(): bool
+    public function isInner(): ?bool
     {
         return $this->isInner;
     }
@@ -430,7 +430,7 @@ class User
      * @param bool $isInner
      * @return User
      */
-    public function setIsInner(bool $isInner): User
+    public function setIsInner(bool $isInner): ?User
     {
         $this->isInner = $isInner;
 
@@ -440,7 +440,7 @@ class User
     /**
      * @return string
      */
-    public function getNotation(): string
+    public function getNotation(): ?string
     {
         return $this->notation;
     }
@@ -449,7 +449,7 @@ class User
      * @param string $notation
      * @return User
      */
-    public function setNotation(string $notation): User
+    public function setNotation(string $notation): ?User
     {
         $this->notation = $notation;
 
@@ -468,7 +468,7 @@ class User
      * @param Role[] $roles
      * @return User
      */
-    public function setRoles($roles): User
+    public function setRoles($roles): ?User
     {
         $this->roles = $roles;
 

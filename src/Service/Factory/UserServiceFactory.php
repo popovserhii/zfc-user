@@ -7,7 +7,8 @@
  */
 namespace Popov\ZfcUser\Service\Factory;
 
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
+use Doctrine\ORM\EntityManager;
 use Popov\ZfcUser\Auth\Auth;
 use Popov\ZfcUser\Service\UserService;
 use Popov\ZfcUser\Model\User;
@@ -22,14 +23,14 @@ class UserServiceFactory
         $auth = $container->get(Auth::class)->getAuthService();
 
         if ($auth->hasIdentity()) {
-            /** @var \Doctrine\ORM\EntityManager $om */
-            $om = $container->get('Doctrine\ORM\EntityManager');
+            /** @var EntityManager $om */
+            $om = $container->get(EntityManager::class);
             /** @var User $user */
-            $user = $auth->getIdentity();
-            $user = $om->merge($user);
+            //$userId = $auth->getIdentity();
+            $user = $om->find(User::class, $auth->getIdentity());
 
-            $storage = $auth->getStorage();
-            $storage->write($user);
+            //$storage = $auth->getStorage();
+            //$storage->write($user);
 
             $userService->setCurrent($user);
         }

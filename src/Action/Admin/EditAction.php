@@ -43,7 +43,7 @@ class EditAction implements MiddlewareInterface, RequestMethodInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $flash = $request->getAttribute('flash');
+        #$flash = $request->getAttribute('flash');
         $route = $request->getAttribute(RouteMatch::class);
 
         //$route->getMatchedRouteName(), $route->getParams()
@@ -69,11 +69,12 @@ class EditAction implements MiddlewareInterface, RequestMethodInterface
                 }
 
                 $om = $this->userService->getObjectManager();
-                $om->persist($user);
+                if (!$om->contains($user)) {
+                    $om->persist($user);
+                }
                 $om->flush();
 
                 #$this->getEventManager()->trigger($route->getParam('action') . '.post', $user, ['password' => $password]);
-
                 #$flash->addMessage('User has been successfully saved', 'success');
 
                 return new RedirectResponse($this->urlHelper->generate('admin/default', [
