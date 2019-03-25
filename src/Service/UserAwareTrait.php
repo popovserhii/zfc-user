@@ -15,7 +15,7 @@ trait UserAwareTrait {
 	/**
 	 * Set the user object
 	 *
-	 * @param User $user
+	 * @param null|User $user
 	 * @return $this
 	 */
 	public function setUser(?User $user) {
@@ -27,7 +27,7 @@ trait UserAwareTrait {
 	/**
 	 * Get the user object
 	 *
-	 * @return User|null
+	 * @return null|User
 	 */
 	public function getUser(): ?User {
 		return $this->user;
