@@ -20,6 +20,7 @@ class User
     const TABLE = 'user';
 
     const GENDER_MALE = 1;
+
     const GENDER_FEMALE = 2;
 
     use DomainAwareTrait;
