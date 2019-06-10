@@ -19,7 +19,12 @@ class User
 
     const TABLE = 'user';
 
+    const GENDER_MALE = 1;
+
+    const GENDER_FEMALE = 2;
+
     use DomainAwareTrait;
+
 
     /**
      * @var integer
@@ -118,6 +123,14 @@ class User
     private $isInner = 0;
 
     /**
+     * User gender: male, female
+     *
+     * @var int
+     * @ORM\Column(name="gender", type="integer", length=1, nullable=true)
+     */
+    private $gender;
+
+    /**
      * @var string
      * @ORM\Column(name="notation", type="string", nullable=true)
      */
@@ -143,7 +156,7 @@ class User
      * })
      */
     #private $pool;
-    
+
     /**
      * Constructor
      */
@@ -433,6 +446,25 @@ class User
     public function setIsInner(bool $isInner): ?User
     {
         $this->isInner = $isInner;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getGender(): int
+    {
+        return $this->gender;
+    }
+
+    /**
+     * @param bool $gender
+     * @return User
+     */
+    public function setGender(int $gender): User
+    {
+        $this->gender = $gender;
 
         return $this;
     }
