@@ -48,6 +48,10 @@ trait LoginTrait
      */
     public function login(ServerRequestInterface $request)
     {
+        if ($this->auth->hasIdentity()) {
+            return true;
+        }
+
         if ($request->getMethod() == 'POST') {
             $params = $request->getParsedBody();
             $this->loginForm->setData($params);

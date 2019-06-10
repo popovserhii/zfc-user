@@ -9,6 +9,7 @@ use Interop\Http\Server\RequestHandlerInterface;
 use Stagem\ZfcAction\MiddlewareInterface;
 use Popov\ZfcCore\Helper\UrlHelper;
 use Popov\ZfcUser\Auth\Auth;
+use Zend\Diactoros\Response\RedirectResponse;
 
 class LogoutAction implements MiddlewareInterface
 {
@@ -35,6 +36,10 @@ class LogoutAction implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        return $this->logout();
+        $this->logout();
+
+        $url = $this->urlHelper->generate($this->redirect['route'], $this->redirect['params']);
+
+        return new RedirectResponse($url);
     }
 }

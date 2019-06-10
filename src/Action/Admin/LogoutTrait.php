@@ -16,16 +16,11 @@
 namespace Popov\ZfcUser\Action\Admin;
 
 use Popov\ZfcUser\Auth\Auth;
-use Zend\Diactoros\Response\RedirectResponse;
-use Zend\Expressive\Helper\UrlHelper;
 
 trait LogoutTrait
 {
     /** @var Auth */
     protected $auth;
-
-    /** @var UrlHelper */
-    protected $urlHelper;
 
     protected $redirect = [
         'route' => 'default',
@@ -41,8 +36,5 @@ trait LogoutTrait
         if ($authService->hasIdentity()) {
             $this->auth->unAuthenticate();
         }
-
-        $url = $this->urlHelper->generate($this->redirect['route'], $this->redirect['params']);
-        return new RedirectResponse($url);
     }
 }
