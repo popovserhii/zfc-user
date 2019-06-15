@@ -105,6 +105,9 @@ return [
         'queries' => [
             'paths' => [__DIR__ . '/../src/GraphQL/Query'],
         ],
+        'mutations' => [
+            'paths' => [__DIR__ . '/../src/GraphQL/Mutation'],
+        ],
     ],
 
     // Doctrine config

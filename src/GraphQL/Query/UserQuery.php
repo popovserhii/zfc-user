@@ -13,6 +13,8 @@
  * @license https://opensource.org/licenses/MIT The MIT License (MIT)
  */
 
+namespace Popov\ZfcUser\GraphQL\Query;
+
 use GraphQL\Doctrine\Types;
 use GraphQL\Type\Definition\Type;
 use Popov\ZfcUser\Model\User;
