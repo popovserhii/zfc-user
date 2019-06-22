@@ -43,13 +43,13 @@ trait LoginTrait
 
     /**
      * @param ServerRequestInterface $request
-     * @return bool
+     * @return bool|object
      * @throws \Zend\Authentication\Exception\ExceptionInterface
      */
     public function login(ServerRequestInterface $request)
     {
         if ($this->auth->hasIdentity()) {
-            return true;
+            return $this->userService->getRepository()->findOneBy(['id' => $this->auth->getIdentity()]);
         }
 
         if ($request->getMethod() == 'POST') {
